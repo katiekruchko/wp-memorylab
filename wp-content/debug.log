@@ -1,0 +1,26 @@
+[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 298
+[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 299
+[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 300
+[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 301
+[23-Dec-2025 04:54:50 UTC] Automatic updates starting...
+[23-Dec-2025 04:54:51 UTC]   Automatic plugin updates starting...
+[23-Dec-2025 04:54:51 UTC]   Automatic plugin updates complete.
+[23-Dec-2025 04:54:51 UTC] Automatic updates complete.
+[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 298
+[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 299
+[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 300
+[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 301
+[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 283
+[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 284
+[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 285
+[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 286
+[23-Dec-2025 07:27:29 UTC] PHP Parse error:  syntax error, unexpected token ":" in /var/www/html/wp-content/themes/memorylab/functions.php on line 525
+[23-Dec-2025 07:27:29 UTC] PHP Parse error:  syntax error, unexpected token ":" in /var/www/html/wp-content/themes/memorylab/functions.php on line 525
+[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 294
+[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 295
+[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 296
+[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 297
+[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 294
+[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 295
+[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 296
+[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 297

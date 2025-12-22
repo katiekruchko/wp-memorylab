@@ -2,13 +2,6 @@
 /**
  * The main template file
  *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
  * @package memorylab
  */
 
@@ -39,12 +32,14 @@ get_header();
           </div>
           <div class="main-hero_cta_tg">
             <a class="btn_light btn btn-icon" href="/"><span>Написать в Телеграм</span><span><img class="a-tg"
-                  src="./images/telegram.svg" alt="" /></span></a>
+                  src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></span></a>
           </div>
         </div>
       </div>
     </div>
-    <section class="catalog-main container">
+
+    <!-- Каталог на главной -->
+    <section class="catalog-main container" id="home-catalog">
       <div class="catalog-header">
         <h2 class="h2-catalog">
           Каталог <span class="text-gradient">оборудования</span>
@@ -54,197 +49,64 @@ get_header();
         <div class="catalog-filter_wrap">
           <div class="catalog-filter">
             <div class="filters">
-              <button class="filter-btn active">Все интерактивы</button>
-              <button class="filter-btn">Хиты сезона 🔥</button>
-              <button class="filter-btn">Фотобудки</button>
-              <button class="filter-btn">AI Интерактивы 🤖</button>
-              <button class="filter-btn">Новинки ⭐</button>
-              <button class="filter-btn">Фото</button>
-              <button class="filter-btn">Видео</button>
-              <button class="filter-btn">Музыкальные</button>
-              <button class="filter-btn">Тимбилдинг</button>
-              <button class="filter-btn">Корпоратив</button>
-              <button class="filter-btn">Конференция</button>
+              <button class="filter-btn active" data-filter="all">Все интерактивы</button>
+              <button class="filter-btn" data-filter="hit">Хиты сезона 🔥</button>
+              <button class="filter-btn" data-filter="fotobudki">Фотобудки</button>
+              <button class="filter-btn" data-filter="ai-interactivy">AI Интерактивы 🤖</button>
+              <button class="filter-btn" data-filter="new">Новинки ⭐</button>
+              <button class="filter-btn" data-filter="foto">Фото</button>
+              <button class="filter-btn" data-filter="video">Видео</button>
+              <button class="filter-btn" data-filter="muzykalnye">Музыкальные</button>
+              <button class="filter-btn" data-filter="timbilding">Тимбилдинг</button>
+              <button class="filter-btn" data-filter="korporativ">Корпоратив</button>
+              <button class="filter-btn" data-filter="konferentsiya">Конференция</button>
             </div>
           </div>
         </div>
+
         <!-- Карточки -->
-        <div class="cards-grid">
-          <!-- Карточка 1 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-1.png" alt="Фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Фотобудка</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
+        <div class="cards-grid" id="home-cards-grid">
+          <?php
+          // Аргументы для первой загрузки на главной
+          $args = array(
+              'post_type'      => 'staff',
+              'posts_per_page' => 6, // Показываем по 6 карточек на главной
+              'post_status'    => 'publish',
+              'orderby'        => 'date',
+              'order'          => 'DESC',
+          );
 
-          <!-- Карточка 2 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-2.png" alt="Видеоспинер" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Видеоспинер</h3>
-              <div class="card-desc">
-                Создаёт головокружительные видеоклипы с эффектом замедления,
-                готовые для размещения в социальных...
-              </div>
-            </div>
-          </div>
+          $staff_query = new WP_Query($args);
 
-          <!-- Карточка 3 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-3.png" alt="AI-фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">AI-фотобудка</h3>
-              <div class="card-desc">
-                Многоновая печать фотографий обработанных нейросетью в режиме
-                реального времени по заданным
-              </div>
-            </div>
-          </div>
+          if ($staff_query->have_posts()) :
+              while ($staff_query->have_posts()) : $staff_query->the_post();
+                  get_template_part('template-parts/content', 'card');
+              endwhile;
+          else :
+              echo '<p>Нет доступных интерактивов.</p>';
+          endif;
 
-          <!-- Карточка 4 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-4.png" alt="Скетч-бот" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Скетч-бот</h3>
-              <div class="card-desc">
-                Рисует портрет в режиме реального времени по фотографии
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 5 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Селфи-зеркало</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
-          <!--  -->
-          <!-- Карточка 6 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-1.png" alt="Фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Фотобудка</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 7 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-2.png" alt="Видеоспинер" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Видеоспинер</h3>
-              <div class="card-desc">
-                Создаёт головокружительные видеоклипы с эффектом замедления,
-                готовые для размещения в социальных...
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 8 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-3.png" alt="AI-фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">AI-фотобудка</h3>
-              <div class="card-desc">
-                Многоновая печать фотографий обработанных нейросетью в режиме
-                реального времени по заданным
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 9 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-4.png" alt="Скетч-бот" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Скетч-бот</h3>
-              <div class="card-desc">
-                Рисует портрет в режиме реального времени по фотографии
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 10 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="./images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Селфи-зеркало</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
+          wp_reset_postdata();
+          ?>
         </div>
+
         <div class="btn-catalog">
-          <button class="btn-grey btn-more">Показать ещё</button>
+          <?php if ($staff_query->max_num_pages > 1) : ?>
+            <button class="btn-grey btn-more"
+                    id="home-load-more"
+                    data-page="1"
+                    data-max-pages="<?php echo $staff_query->max_num_pages; ?>"
+                    data-post-type="staff">
+              Показать ещё
+            </button>
+            <div class="loading-spinner" id="home-loading-spinner" style="display: none;">
+              Загрузка...
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </section>
+
   <!-- AI Calculator -->
   <section class="ai-service-section">
   <div class="ai-service-wrap container">
@@ -276,7 +138,7 @@ get_header();
             </div>
           </div>
         </div>
-    
+
         <!-- Длительность -->
         <div class="ai-select-wrapper">
           <div class="ai-custom-select" id="duration-trigger" data-name="duration">
@@ -297,7 +159,7 @@ get_header();
             </div>
           </div>
         </div>
-    
+
         <!-- Формат площадки -->
         <div class="ai-select-wrapper">
           <div class="ai-custom-select" id="format-trigger" data-name="format">
@@ -314,7 +176,7 @@ get_header();
           </div>
           </div>
         </div>
-    
+
         <!-- Слайдер -->
         <div class="ai-slider-container">
           <span class="ai-slider-label">Количество человек:</span>
@@ -327,7 +189,7 @@ get_header();
             </div>
           </div>
         </div>
-    
+
         <div class="wrap-ai-btn">
           <button id="ai-submit-btn" class="ai-submit-btn" type="submit">Подобрать варианты</button>
         </div>
@@ -335,177 +197,7 @@ get_header();
     </form>
 
 <div id="show-ai-results" class="ai-result">
-  <div class="cards-grid">
-    <!-- Карточка 1 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-1.png" alt="Фотобудка" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Фотобудка</h3>
-        <div class="card-desc">
-          Фотографирует и моментально печатает снимки с вашим логотипом
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 2 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-2.png" alt="Видеоспинер" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Видеоспинер</h3>
-        <div class="card-desc">
-          Создаёт головокружительные видеоклипы с эффектом замедления,
-          готовые для размещения в социальных...
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 3 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-3.png" alt="AI-фотобудка" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">AI-фотобудка</h3>
-        <div class="card-desc">
-          Многоновая печать фотографий обработанных нейросетью в режиме
-          реального времени по заданным
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 4 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-4.png" alt="Скетч-бот" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Скетч-бот</h3>
-        <div class="card-desc">
-          Рисует портрет в режиме реального времени по фотографии
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 5 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Селфи-зеркало</h3>
-        <div class="card-desc">
-          Фотографирует и моментально печатает снимки с вашим логотипом
-        </div>
-      </div>
-    </div>
-    <!--  -->
-    <!-- Карточка 6 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-1.png" alt="Фотобудка" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Фотобудка</h3>
-        <div class="card-desc">
-          Фотографирует и моментально печатает снимки с вашим логотипом
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 7 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-2.png" alt="Видеоспинер" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Видеоспинер</h3>
-        <div class="card-desc">
-          Создаёт головокружительные видеоклипы с эффектом замедления,
-          готовые для размещения в социальных...
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 8 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-3.png" alt="AI-фотобудка" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">AI-фотобудка</h3>
-        <div class="card-desc">
-          Многоновая печать фотографий обработанных нейросетью в режиме
-          реального времени по заданным
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 9 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-4.png" alt="Скетч-бот" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge new">Новинка</span>
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Скетч-бот</h3>
-        <div class="card-desc">
-          Рисует портрет в режиме реального времени по фотографии
-        </div>
-      </div>
-    </div>
-
-    <!-- Карточка 10 -->
-    <div class="card">
-      <div class="card-image-wrapper">
-        <img src="./images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-        <div class="badge-wrap">
-          <span class="badge hit">Хит 🔥</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Селфи-зеркало</h3>
-        <div class="card-desc">
-          Фотографирует и моментально печатает снимки с вашим логотипом
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Результаты AI будут загружаться здесь -->
 </div>
 
   </div>
@@ -527,50 +219,50 @@ get_header();
           <!-- Первый ряд -->
           <div class="row-insta row-insta-1">
             <div class="instagram-item">
-              <img src="./images/insta-1.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-1.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-2.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-2.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-3.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-3.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-4.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-4.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-5.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-5.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-6.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-6.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-7.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-7.png" alt="" />
             </div>
           </div>
 
           <!-- Второй ряд -->
           <div class="row-insta row-insta-2">
             <div class="instagram-item">
-              <img src="./images/insta-8.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-8.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-9.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-9.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-10.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-10.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-11.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-11.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-12.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-12.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-13.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-13.png" alt="" />
             </div>
             <div class="instagram-item">
-              <img src="./images/insta-14.png" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-14.png" alt="" />
             </div>
           </div>
         </div>
@@ -582,12 +274,11 @@ get_header();
       <div class="cta-insta">
         <button class="instagram-button btn">Перейти в инстаграм</button>
         <div class="qr-code">
-          <img src="./images/qr-code-line.svg" alt="" />
+          <img src="<?php echo get_template_directory_uri(); ?>/images/qr-code-line.svg" alt="" />
         </div>
       </div>
     </section>
   </main>
- 
 
 <?php
 get_footer();
