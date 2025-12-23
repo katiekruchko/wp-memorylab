@@ -49,11 +49,10 @@ get_header();
         <!-- Карточки -->
         <div class="cards-grid" id="cards-grid">
           <?php
-          // Аргументы для первой загрузки
           $paged = get_query_var('paged') ? get_query_var('paged') : 1;
           $args = array(
               'post_type'      => 'staff',
-              'posts_per_page' => 6, // Показываем по 6 карточек
+              'posts_per_page' => 8,
               'post_status'    => 'publish',
               'orderby'        => 'date',
               'order'          => 'DESC',

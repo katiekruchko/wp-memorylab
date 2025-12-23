@@ -67,10 +67,9 @@ get_header();
         <!-- Карточки -->
         <div class="cards-grid" id="home-cards-grid">
           <?php
-          // Аргументы для первой загрузки на главной
           $args = array(
               'post_type'      => 'staff',
-              'posts_per_page' => 6, // Показываем по 6 карточек на главной
+              'posts_per_page' => 8,
               'post_status'    => 'publish',
               'orderby'        => 'date',
               'order'          => 'DESC',
@@ -109,99 +108,118 @@ get_header();
 
   <!-- AI Calculator -->
   <section class="ai-service-section">
-  <div class="ai-service-wrap container">
-    <h2 class="ai-service-h">
-      Выбор <span class="ai-h2-gradient">нейросети</span>
-    </h2>
-    <div class="ai-service-desc">
-      Наш калькулятор на основе нейросети поможет вам подобрать самое
-      оптимальное оборудование для мероприятия
-    </div>
+    <div class="ai-service-wrap container">
+      <h2 class="ai-service-h">
+        Выбор <span class="ai-h2-gradient">нейросети</span>
+      </h2>
+      <div class="ai-service-desc">
+        Наш калькулятор на основе нейросети поможет вам подобрать самое
+        оптимальное оборудование для мероприятия
+      </div>
 
-    <form class="ai-form" id="ai-form">
-      <div class="ai-form-row">
-        <!-- Тип мероприятия -->
-        <div class="ai-select-wrapper">
-          <div class="ai-custom-select" id="event-type-trigger" data-name="event_type">
-            <span>Тип мероприятия</span>
-          </div>
-          <input type="hidden" name="event_type" value="">
-          <div class="ai-error-message">Выберите значение из списка</div>
-          <div class="ai-dropdown" id="event-type-dropdown">
-            <div class="ai-dropdown-wrap">
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 1">Тип мероприятия 1</div>
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 2">Тип мероприятия 2</div>
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 3">Тип мероприятия 3</div>
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 4">Тип мероприятия 4</div>
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 5">Тип мероприятия 5</div>
-              <div class="ai-dropdown-item" data-value="Тип мероприятия 6">Тип мероприятия 6</div>
+      <form class="ai-form" id="ai-form">
+        <div class="ai-form-row">
+          <!-- Тип мероприятия -->
+          <div class="ai-select-wrapper">
+            <div class="ai-custom-select" id="event-type-trigger" data-name="event_type">
+              <span>Тип мероприятия</span>
+            </div>
+            <input type="hidden" name="event_type" value="">
+            <div class="ai-error-message">Выберите значение из списка</div>
+            <div class="ai-dropdown" id="event-type-dropdown">
+              <div class="ai-dropdown-wrap">
+                <?php
+                $event_types = get_terms(array(
+                  'taxonomy' => 'event_type',
+                  'hide_empty' => true,
+                ));
+
+                if (!empty($event_types) && !is_wp_error($event_types)) {
+                  foreach ($event_types as $term) {
+                    echo '<div class="ai-dropdown-item" data-value="' . esc_attr($term->slug) . '">' . esc_html($term->name) . '</div>';
+                  }
+                }
+                ?>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Длительность -->
-        <div class="ai-select-wrapper">
-          <div class="ai-custom-select" id="duration-trigger" data-name="duration">
-            <span>Длительность</span>
-          </div>
-          <input type="hidden" name="duration" value="">
-          <div class="ai-error-message">Выберите значение из списка</div>
-          <div class="ai-dropdown" id="duration-dropdown">
-            <div class="ai-dropdown-wrap">
-              <div class="ai-dropdown-item" data-value="Длительность 1">Длительность 1</div>
-              <div class="ai-dropdown-item" data-value="Длительность 2">Длительность 2</div>
-              <div class="ai-dropdown-item" data-value="Длительность 3">Длительность 3</div>
-              <div class="ai-dropdown-item" data-value="Длительность 4">Длительность 4</div>
-              <div class="ai-dropdown-item" data-value="Длительность 5">Длительность 5</div>
-              <div class="ai-dropdown-item" data-value="Длительность 6">Длительность 6</div>
-              <div class="ai-dropdown-item" data-value="Длительность 7">Длительность 7</div>
-              <div class="ai-dropdown-item" data-value="Длительность 8">Длительность 8</div>
+          <!-- Длительность -->
+          <div class="ai-select-wrapper">
+            <div class="ai-custom-select" id="duration-trigger" data-name="duration">
+              <span>Длительность</span>
+            </div>
+            <input type="hidden" name="duration" value="">
+            <div class="ai-error-message">Выберите значение из списка</div>
+            <div class="ai-dropdown" id="duration-dropdown">
+              <div class="ai-dropdown-wrap">
+                <?php
+                $durations = get_terms(array(
+                  'taxonomy' => 'duration',
+                  'hide_empty' => true,
+                ));
+
+                if (!empty($durations) && !is_wp_error($durations)) {
+                  foreach ($durations as $term) {
+                    echo '<div class="ai-dropdown-item" data-value="' . esc_attr($term->slug) . '">' . esc_html($term->name) . '</div>';
+                  }
+                }
+                ?>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Формат площадки -->
-        <div class="ai-select-wrapper">
-          <div class="ai-custom-select" id="format-trigger" data-name="format">
-            <span>Формат площадки</span>
-          </div>
-          <input type="hidden" name="format" value="">
-          <div class="ai-error-message">Выберите значение из списка</div>
-          <div class="ai-dropdown" id="format-dropdown">
-          <div class="ai-dropdown-wrap">
-              <div class="ai-dropdown-item" data-value="Формат площадки 1">Формат площадки 1</div>
-              <div class="ai-dropdown-item" data-value="Формат площадки 2">Формат площадки 2</div>
-              <div class="ai-dropdown-item" data-value="Формат площадки 3">Формат площадки 3</div>
-              <div class="ai-dropdown-item" data-value="Формат площадки 4">Формат площадки 4</div>
-          </div>
-          </div>
-        </div>
+          <!-- Формат площадки -->
+          <div class="ai-select-wrapper">
+            <div class="ai-custom-select" id="format-trigger" data-name="format">
+              <span>Формат площадки</span>
+            </div>
+            <input type="hidden" name="format" value="">
+            <div class="ai-error-message">Выберите значение из списка</div>
+            <div class="ai-dropdown" id="format-dropdown">
+              <div class="ai-dropdown-wrap">
+                <?php
+                $formats = get_terms(array(
+                  'taxonomy' => 'format',
+                  'hide_empty' => true,
+                ));
 
-        <!-- Слайдер -->
-        <div class="ai-slider-container">
-          <span class="ai-slider-label">Количество человек:</span>
-          <div class="ai-slider-wrapper">
-            <div class="ai-slider-value">200</div>
-            <input type="range" min="50" max="1000" value="200" step="50" class="ai-slider" id="people-slider" name="people_count" />
-            <div class="ai-slider-labels">
-              <span><50</span>
-              <span>1000+</span>
+                if (!empty($formats) && !is_wp_error($formats)) {
+                  foreach ($formats as $term) {
+                    echo '<div class="ai-dropdown-item" data-value="' . esc_attr($term->slug) . '">' . esc_html($term->name) . '</div>';
+                  }
+                }
+                ?>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="wrap-ai-btn">
-          <button id="ai-submit-btn" class="ai-submit-btn" type="submit">Подобрать варианты</button>
+          <!-- Слайдер -->
+          <div class="ai-slider-container">
+            <span class="ai-slider-label">Количество человек:</span>
+            <div class="ai-slider-wrapper">
+              <div class="ai-slider-value">200</div>
+              <input type="range" min="50" max="1000" value="200" step="50" class="ai-slider" id="people-slider" name="people_count" />
+              <div class="ai-slider-labels">
+                <span><50</span>
+                <span>1000+</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="wrap-ai-btn">
+            <button id="ai-submit-btn" class="ai-submit-btn" type="submit">Подобрать варианты</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="show-ai-results" class="ai-result">
+        <div class="cards-grid" id="ai-results-grid">
+        <!-- Результаты AI будут загружаться здесь -->
         </div>
       </div>
-    </form>
-
-<div id="show-ai-results" class="ai-result">
-  <!-- Результаты AI будут загружаться здесь -->
-</div>
-
-  </div>
-</section>
+    </div>
+  </section>
   <!-- End AI Calculator -->
 
     <!-- Instagram section -->

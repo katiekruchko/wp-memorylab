@@ -1,26 +1,246 @@
-[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 298
-[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 299
-[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 300
-[23-Dec-2025 04:54:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 301
-[23-Dec-2025 04:54:50 UTC] Automatic updates starting...
-[23-Dec-2025 04:54:51 UTC]   Automatic plugin updates starting...
-[23-Dec-2025 04:54:51 UTC]   Automatic plugin updates complete.
-[23-Dec-2025 04:54:51 UTC] Automatic updates complete.
-[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 298
-[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 299
-[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 300
-[23-Dec-2025 05:49:45 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 301
-[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 283
-[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 284
-[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 285
-[23-Dec-2025 06:44:37 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 286
-[23-Dec-2025 07:27:29 UTC] PHP Parse error:  syntax error, unexpected token ":" in /var/www/html/wp-content/themes/memorylab/functions.php on line 525
-[23-Dec-2025 07:27:29 UTC] PHP Parse error:  syntax error, unexpected token ":" in /var/www/html/wp-content/themes/memorylab/functions.php on line 525
-[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 294
-[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 295
-[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 296
-[23-Dec-2025 07:45:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 297
-[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 294
-[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 295
-[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 296
-[23-Dec-2025 10:18:08 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 297
+[23-Dec-2025 14:56:46 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 14:56:46 UTC] Pods Query Params: Array
+(
+    [limit] => 2
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 14:56:46 UTC] Pods Found Posts: 2
+[23-Dec-2025 14:56:46 UTC] ID POST: 91
+[23-Dec-2025 14:56:46 UTC] PHP Deprecated:  Function get_the_excerpt was called with an argument that is <strong>deprecated</strong> since version 2.3.0 with no alternative available. in /var/www/html/wp-includes/functions.php on line 6131
+[23-Dec-2025 14:56:46 UTC] ID POST: 89
+[23-Dec-2025 14:56:46 UTC] PHP Deprecated:  Function get_the_excerpt was called with an argument that is <strong>deprecated</strong> since version 2.3.0 with no alternative available. in /var/www/html/wp-includes/functions.php on line 6131
+[23-Dec-2025 14:58:48 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 14:58:48 UTC] Pods Query Params: Array
+(
+    [limit] => 2
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 14:58:48 UTC] Pods Found Posts: 2
+[23-Dec-2025 14:59:07 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 14:59:07 UTC] Pods Query Params: Array
+(
+    [limit] => 2
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 14:59:07 UTC] Pods Found Posts: 2
+[23-Dec-2025 15:00:05 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 15:00:05 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 15:00:05 UTC] Pods Found Posts: 4
+[23-Dec-2025 16:56:13 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 16:56:13 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 16:56:13 UTC] Pods Found Posts: 4
+[23-Dec-2025 16:57:22 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 16:57:22 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 16:57:22 UTC] Pods Found Posts: 4
+[23-Dec-2025 17:00:28 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 17:00:28 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 17:00:28 UTC] Pods Found Posts: 4
+[23-Dec-2025 17:01:07 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 200
+)
+
+[23-Dec-2025 17:01:07 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 200
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 17:01:08 UTC] Pods Found Posts: 4
+[23-Dec-2025 17:03:43 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 100
+)
+
+[23-Dec-2025 17:03:43 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 100
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 17:03:43 UTC] Pods Found Posts: 6
+[23-Dec-2025 17:04:04 UTC] AI Calculator Request: Array
+(
+    [event_type] => wedding
+    [duration] => 2_3_hour
+    [format] => cafe
+    [people_count] => 400
+)
+
+[23-Dec-2025 17:04:04 UTC] Pods Query Params: Array
+(
+    [limit] => 8
+    [orderby] => RAND()
+    [where] => Array
+        (
+            [0] => number_of_attendees.meta_value >= 400
+            [1] => event_type.slug = 'wedding'
+            [2] => duration.slug = '2_3_hour'
+            [3] => format.slug = 'cafe'
+        )
+
+)
+
+[23-Dec-2025 17:04:04 UTC] Pods Found Posts: 0
+[24-Dec-2025 05:23:44 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 284
+[24-Dec-2025 05:23:44 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 285
+[24-Dec-2025 05:23:44 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 286
+[24-Dec-2025 05:23:44 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 287
+[24-Dec-2025 05:23:44 UTC] Automatic updates starting...
+[24-Dec-2025 05:23:45 UTC]   Automatic plugin updates starting...
+[24-Dec-2025 05:23:45 UTC]   Automatic plugin updates complete.
+[24-Dec-2025 05:23:46 UTC] Automatic updates complete.
+[24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 284
+[24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 285
+[24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 286
+[24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 287

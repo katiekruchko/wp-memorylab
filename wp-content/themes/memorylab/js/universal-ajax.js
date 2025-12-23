@@ -445,6 +445,158 @@
         console.log('Catalog page initialized successfully');
     }
 
+    /**
+     * Инициализация AI калькулятора
+     */
+    function initAICalculator() {
+        console.log('Initializing AI Calculator...');
+
+        // 1. Инициализация выпадающих списков
+        const selectTriggers = document.querySelectorAll('.ai-custom-select');
+
+        selectTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdownId = this.id.replace('-trigger', '-dropdown');
+                const dropdown = document.getElementById(dropdownId);
+
+                // Закрываем все открытые dropdown
+                document.querySelectorAll('.ai-dropdown').forEach(d => {
+                    if (d.id !== dropdownId) {
+                        d.classList.remove('active');
+                    }
+                });
+
+                // Переключаем текущий dropdown
+                dropdown.classList.toggle('active');
+
+                // Обработка выбора элемента
+                dropdown.querySelectorAll('.ai-dropdown-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const value = this.getAttribute('data-value');
+                        const text = this.textContent;
+
+                        // Обновляем текст триггера
+                        trigger.querySelector('span').textContent = text;
+
+                        // Обновляем скрытое поле
+                        const input = trigger.parentElement.querySelector('input[type="hidden"]');
+                        input.value = value;
+
+                        // Убираем ошибку, если была
+                        trigger.parentElement.classList.remove('error');
+
+                        // Закрываем dropdown
+                        dropdown.classList.remove('active');
+                    });
+                });
+            });
+        });
+
+        // Закрытие dropdown при клике вне
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.ai-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        });
+
+        // 2. Обновление значения слайдера
+        const peopleSlider = document.getElementById('people-slider');
+        const sliderValue = document.querySelector('.ai-slider-value');
+
+        if (peopleSlider && sliderValue) {
+            peopleSlider.addEventListener('input', function() {
+                sliderValue.textContent = this.value;
+            });
+        }
+
+        // 3. Обработка отправки формы
+        const aiForm = document.getElementById('ai-form');
+        const aiSubmitBtn = document.getElementById('ai-submit-btn');
+        const resultsContainer = document.getElementById('ai-results-grid');
+
+        // 3. Обработка отправки формы (ЗАМЕНА НА jQuery.ajax)
+        if (aiForm && aiSubmitBtn && resultsContainer) {
+            console.log('AI Calculator elements found');
+
+            $(aiSubmitBtn).on('click', function(e) {
+                e.preventDefault();
+                console.log('AI Calculator form submitted');
+
+                // Проверка обязательных полей
+                let hasErrors = false;
+                $('.ai-select-wrapper').each(function() {
+                    const input = $(this).find('input[type="hidden"]');
+                    if (!input.val()) {
+                        $(this).addClass('error');
+                        hasErrors = true;
+                    } else {
+                        $(this).removeClass('error');
+                    }
+                });
+
+                if (hasErrors) {
+                    console.log('Form has errors - not all fields are selected');
+                    return;
+                }
+
+                // Показ загрузки
+                const $aiSubmitBtn = $(aiSubmitBtn); // Конвертируем в jQuery объект
+                const originalText = $aiSubmitBtn.text();
+                $aiSubmitBtn.text('Ищем...');
+                $aiSubmitBtn.prop('disabled', true);
+
+                // Используем jQuery для resultsContainer
+                const $resultsContainer = $(resultsContainer);
+                $resultsContainer.html('<div class="ai-loading">Ищем подходящие варианты...</div>');
+
+                // Данные формы
+                const data = {
+                    action: 'ai_calculator_search',
+                    nonce: aiCalculatorData.nonce,
+                    event_type: $('input[name="event_type"]').val(),
+                    duration: $('input[name="duration"]').val(),
+                    format: $('input[name="format"]').val(),
+                    people_count: $('input[name="people_count"]').val()
+                };
+
+                console.log('Sending AI request:', data);
+
+                // AJAX-запрос через jQuery (работает с WordPress)
+                $.ajax({
+                    url: aiCalculatorData.ajax_url,
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        console.log('AJAX success:', response);
+                        if (response.success) {
+                            $resultsContainer.html(response.data.html);
+                        } else {
+                            $resultsContainer.html('<div class="ai-error">Ошибка: ' + (response.data || 'Неизвестная ошибка') + '</div>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error, xhr.responseText);
+                        $resultsContainer.html('<div class="ai-error">Ошибка подключения к серверу.</div>');
+                    },
+                    complete: function() {
+                        $aiSubmitBtn.text(originalText);
+                        $aiSubmitBtn.prop('disabled', false);
+                    }
+                });
+            });
+
+            console.log('AI Calculator form handler attached successfully');
+        } else {
+            console.log('AI Calculator elements not found:', {
+                form: !!aiForm,
+                button: !!aiSubmitBtn,
+                container: !!resultsContainer
+            });
+        }
+    }
+
     // ========================
     // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
     // ========================
@@ -487,7 +639,11 @@
             }
         }
 
-        console.log('Catalogs initialization complete');
+        // Инициализация AI калькулятора
+        console.log('Initializing AI Calculator...');
+        initAICalculator();
+
+        console.log('All initializations complete');
     });
 
 })(jQuery);

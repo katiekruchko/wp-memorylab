@@ -14,49 +14,20 @@ if ( ! defined( '_S_VERSION' ) ) {
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
- *
- * Note that this function is hooked into the after_setup_theme hook, which
- * runs before the init hook. The init hook is too late for some features, such
- * as indicating support for post thumbnails.
  */
 function memorylab_setup() {
-	/*
-		* Make theme available for translation.
-		* Translations can be filed in the /languages/ directory.
-		* If you're building a theme based on memorylab, use a find and replace
-		* to change 'memorylab' to the name of your theme in all the template files.
-		*/
 	load_theme_textdomain( 'memorylab', get_template_directory() . '/languages' );
 
-	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
-
-	/*
-		* Let WordPress manage the document title.
-		* By adding theme support, we declare that this theme does not use a
-		* hard-coded <title> tag in the document head, and expect WordPress to
-		* provide it for us.
-		*/
 	add_theme_support( 'title-tag' );
-
-	/*
-		* Enable support for Post Thumbnails on posts and pages.
-		*
-		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		*/
 	add_theme_support( 'post-thumbnails' );
 
-	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
 			'menu-1' => esc_html__( 'Primary', 'memorylab' ),
 		)
 	);
 
-	/*
-		* Switch default core markup for search form, comment form, and comments
-		* to output valid HTML5.
-		*/
 	add_theme_support(
 		'html5',
 		array(
@@ -70,7 +41,6 @@ function memorylab_setup() {
 		)
 	);
 
-	// Set up the WordPress core custom background feature.
 	add_theme_support(
 		'custom-background',
 		apply_filters(
@@ -82,14 +52,8 @@ function memorylab_setup() {
 		)
 	);
 
-	// Add theme support for selective refresh for widgets.
 	add_theme_support( 'customize-selective-refresh-widgets' );
 
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
 	add_theme_support(
 		'custom-logo',
 		array(
@@ -103,11 +67,7 @@ function memorylab_setup() {
 add_action( 'after_setup_theme', 'memorylab_setup' );
 
 /**
- * Set the content width in pixels, based on the theme's design and stylesheet.
- *
- * Priority 0 to make it available to lower priority callbacks.
- *
- * @global int $content_width
+ * Set the content width in pixels.
  */
 function memorylab_content_width() {
 	$GLOBALS['content_width'] = apply_filters( 'memorylab_content_width', 640 );
@@ -116,8 +76,6 @@ add_action( 'after_setup_theme', 'memorylab_content_width', 0 );
 
 /**
  * Register widget area.
- *
- * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
 function memorylab_widgets_init() {
 	register_sidebar(
@@ -150,7 +108,7 @@ function memorylab_scripts() {
 add_action( 'wp_enqueue_scripts', 'memorylab_scripts' );
 
 /**
- * Implement the Custom Header feature.
+ * Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
 
@@ -180,20 +138,12 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  * Функция-помощник для получения названия категории/тега по slug
  */
 function get_term_display_name($slug) {
-    // Сначала пробуем найти в тегах
     $term = get_term_by('slug', $slug, 'post_tag');
     if ($term) {
         return $term->name;
     }
 
-    // Пробуем найти в категориях
     $term = get_term_by('slug', $slug, 'category');
-    if ($term) {
-        return $term->name;
-    }
-
-    // Пробуем найти в пользовательских таксономиях
-    $term = get_term_by('slug', $slug, 'your_custom_taxonomy'); // если есть
     if ($term) {
         return $term->name;
     }
@@ -215,7 +165,7 @@ function load_more_posts() {
 
     $args = array(
         'post_type'      => $post_type,
-        'posts_per_page' => 6,
+        'posts_per_page' => 8,
         'post_status'    => 'publish',
         'orderby'        => 'date',
         'order'          => 'DESC',
@@ -250,7 +200,6 @@ function load_more_posts() {
 
     $query = new WP_Query($args);
 
-    // Получаем название категории/тега для вывода в сообщении
     $filter_name = '';
     if ($filter !== 'all') {
         $filter_name = get_term_display_name($filter);
@@ -415,86 +364,6 @@ add_action('wp_ajax_search_products', 'search_products_ajax');
 add_action('wp_ajax_nopriv_search_products', 'search_products_ajax');
 
 /**
- * AJAX обработчик AI калькулятора
- */
-function ai_calculate_ajax() {
-    check_ajax_referer('load_more_nonce', 'nonce');
-
-    // Получаем данные из формы
-    parse_str($_POST['data'], $form_data);
-
-    $event_type = isset($form_data['event_type']) ? sanitize_text_field($form_data['event_type']) : '';
-    $duration = isset($form_data['duration']) ? sanitize_text_field($form_data['duration']) : '';
-    $format = isset($form_data['format']) ? sanitize_text_field($form_data['format']) : '';
-    $people_count = isset($form_data['people_count']) ? intval($form_data['people_count']) : 200;
-
-    // Здесь логика подбора оборудования на основе введенных данных
-    // Это пример - нужно адаптировать под вашу логику
-
-    $args = array(
-        'post_type'      => 'staff',
-        'posts_per_page' => 6,
-        'post_status'    => 'publish',
-        'orderby'        => 'rand', // или другая логика
-    );
-
-    // Пример: подбор по типу мероприятия
-    if ($event_type) {
-        $args['tax_query'][] = array(
-            'taxonomy' => 'category',
-            'field'    => 'name',
-            'terms'    => $event_type,
-        );
-    }
-
-    $query = new WP_Query($args);
-
-    if ($query->have_posts()) :
-        echo '<div class="ai-results-header">';
-        echo '<h3>Рекомендуем для вашего мероприятия:</h3>';
-        echo '<p>На основе ваших параметров мы подобрали оптимальное оборудование</p>';
-        echo '</div>';
-
-        echo '<div class="cards-grid">';
-        while ($query->have_posts()) : $query->the_post();
-            get_template_part('template-parts/content', 'card');
-        endwhile;
-        echo '</div>';
-    else :
-        echo '<div class="no-ai-results">';
-        echo '<p>По вашим параметрам не найдено подходящего оборудования.</p>';
-        echo '<p>Попробуйте изменить критерии или <a href="/catalog">посмотрите весь каталог</a>.</p>';
-        echo '</div>';
-    endif;
-
-    wp_reset_postdata();
-    wp_die();
-}
-add_action('wp_ajax_ai_calculate', 'ai_calculate_ajax');
-add_action('wp_ajax_nopriv_ai_calculate', 'ai_calculate_ajax');
-
-/**
- * Подключение скриптов для AJAX функционала
- */
-function memorylab_enqueue_scripts() {
-    // Универсальный AJAX скрипт для всех страниц
-    wp_enqueue_script(
-        'universal-ajax',
-        get_template_directory_uri() . '/js/universal-ajax.js',
-        array('jquery'),
-        '1.0.0',
-        true
-    );
-
-    // Локализация для AJAX
-    wp_localize_script('universal-ajax', 'ajax_params', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce'    => wp_create_nonce('load_more_nonce'),
-    ));
-}
-add_action('wp_enqueue_scripts', 'memorylab_enqueue_scripts');
-
-/**
  * AJAX обработчик для комбинированного поиска (текст + фильтр)
  */
 function combined_search_ajax() {
@@ -507,7 +376,7 @@ function combined_search_ajax() {
 
     $args = array(
         'post_type'      => $post_type,
-        'posts_per_page' => 6,
+        'posts_per_page' => 8,
         'post_status'    => 'publish',
         'orderby'        => 'date',
         'order'          => 'DESC',
@@ -602,3 +471,120 @@ function combined_search_ajax() {
 
 add_action('wp_ajax_combined_search', 'combined_search_ajax');
 add_action('wp_ajax_nopriv_combined_search', 'combined_search_ajax');
+
+/**
+ * AJAX обработчик для AI калькулятора с использованием Pods API
+ */
+function ai_calculator_search() {
+    // Проверяем nonce для безопасности
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ai_calculator_nonce')) {
+        wp_send_json_error('Security check failed');
+    }
+
+    // Получаем параметры из AJAX запроса
+    $event_type = sanitize_text_field($_POST['event_type'] ?? '');
+    $duration = sanitize_text_field($_POST['duration'] ?? '');
+    $format = sanitize_text_field($_POST['format'] ?? '');
+    $people_count = intval($_POST['people_count'] ?? 200);
+
+    // Инициализируем Pods
+    $pod = pods('staff');
+
+    if (!$pod) {
+        wp_send_json_error('Failed to initialize Pods');
+    }
+
+    // Подготавливаем параметры для поиска
+    $params = array(
+        'limit'   => 8, // Максимум 2 сущности
+        'orderby' => 'RAND()', // Случайный порядок
+        'where'   => array(),
+    );
+
+    // Добавляем фильтрацию по количеству участников
+    // Pods использует синтаксис {meta_key}.meta_value для кастомных полей
+    $params['where'][] = "number_of_attendees.meta_value >= $people_count";
+
+    // Добавляем фильтрацию по таксономиям, если они выбраны
+    if (!empty($event_type)) {
+        $params['where'][] = "event_type.slug = '$event_type'";
+    }
+
+    if (!empty($duration)) {
+        $params['where'][] = "duration.slug = '$duration'";
+    }
+
+    if (!empty($format)) {
+        $params['where'][] = "format.slug = '$format'";
+    }
+
+    $pod->find($params);
+    $found_posts = $pod->total();
+
+    ob_start();
+
+    if ($found_posts > 0) {
+        while ($pod->fetch()) {
+            $post_id = $pod->field('ID');
+
+            // Передаем ID поста в шаблон
+            $args = array('post_id' => $post_id);
+            get_template_part('template-parts/content', 'card', $args);
+        }
+    } else {
+        echo '<div class="ai-no-results">';
+        echo '<p>По вашему запросу не найдено подходящего оборудования.</p>';
+        echo '<p>Попробуйте изменить параметры поиска:</p>';
+        echo '<ul>';
+        echo '<li>Выберите другие типы мероприятий</li>';
+        echo '<li>Уменьшите количество участников</li>';
+        echo '<li>Измените длительность мероприятия</li>';
+        echo '</ul>';
+        echo '</div>';
+    }
+
+    $output = ob_get_clean();
+    wp_send_json_success(array(
+        'html' => $output,
+        'found_posts' => $found_posts
+    ));
+}
+
+add_action('wp_ajax_ai_calculator_search', 'ai_calculator_search');
+add_action('wp_ajax_nopriv_ai_calculator_search', 'ai_calculator_search');
+
+/**
+ * Подключение скриптов для AJAX функционала
+ */
+function memorylab_enqueue_scripts() {
+    // Основной скрипт темы
+    wp_enqueue_style('memorylab-style', get_stylesheet_uri(), array(), _S_VERSION);
+    wp_style_add_data('memorylab-style', 'rtl', 'replace');
+    wp_enqueue_script('memorylab-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true);
+
+    // Универсальный AJAX скрипт для всех страниц
+    wp_enqueue_script(
+        'universal-ajax',
+        get_template_directory_uri() . '/js/universal-ajax.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
+
+    // Локализация для AJAX каталога
+    wp_localize_script('universal-ajax', 'ajax_params', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('load_more_nonce'),
+    ));
+
+    // Локализация для AI калькулятора
+    wp_localize_script('universal-ajax', 'aiCalculatorData', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('ai_calculator_nonce')
+    ));
+
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+add_action('wp_enqueue_scripts', 'memorylab_enqueue_scripts');
