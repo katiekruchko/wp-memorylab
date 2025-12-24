@@ -18,24 +18,26 @@
  * @package WordPress
  */
 
-// ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'memorylab' );
+if ( getenv( 'IS_DDEV_PROJECT' ) != 'true' ) {
+  // ** Database settings - You can get this info from your web host ** //
+  /** The name of the database for WordPress */
+  define( 'DB_NAME', 'memorylab' );
 
-/** Database username */
-define( 'DB_USER', 'memorylab' );
+  // /** Database username */
+  define( 'DB_USER', 'memorylab' );
 
-/** Database password */
-define( 'DB_PASSWORD', 'fBw/ULqz-6QYnt9o' );
+  // /** Database password */
+  define( 'DB_PASSWORD', 'fBw/ULqz-6QYnt9o' );
 
-/** Database hostname */
-define( 'DB_HOST', 'localhost' );
+  // /** Database hostname */
+  define( 'DB_HOST', 'localhost' );
 
-/** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8mb4' );
+  // /** Database charset to use in creating database tables. */
+  define( 'DB_CHARSET', 'utf8mb4' );
 
-/** The database collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+  // /** The database collate type. Don't change this if in doubt. */
+  define( 'DB_COLLATE', '' );
+}
 
 /**#@+
  * Authentication unique keys and salts.
@@ -85,8 +87,8 @@ $table_prefix = 'wp_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', false );
-
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
 /* Add any custom values between this line and the "stop editing" line. */
 
 
@@ -96,6 +98,13 @@ define( 'WP_DEBUG', false );
 /** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
+}
+
+if ( getenv( 'IS_DDEV_PROJECT' ) == 'true' ) {
+  $ddev_settings = dirname(__FILE__) . '/wp-config-ddev.php';
+  if (is_readable($ddev_settings) && !defined('DB_USER')) {
+    require_once($ddev_settings);
+  }
 }
 
 /** Sets up WordPress vars and included files. */

@@ -10,14 +10,21 @@
 get_header();
 ?>
 <main id="primary" class="page secondary-page site-main">
-    
-    <section class="catalog-main container">
+
+    <section class="catalog-main container" id="catalog-page">
       <div class="search-product-header">
         <div class="search-product-h"><h1 class="h1-black">Все интерактивы</h1></div>
         <div class="search-product-block">
           <div class="search-product-wrap">
-            <div class="search-input-icon"><img src="/images/search-icon.svg" alt="поиск интерактива"></div>
-            <input type="text" class="search-input" placeholder="Название интерактива, категория..." autofocus />
+            <div class="search-input-icon">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/search-icon.svg" alt="поиск интерактива">
+            </div>
+            <input type="text"
+                  class="search-input"
+                  id="product-search"
+                  placeholder="Название интерактива, категория..."
+                  autocomplete="off" />
+          </div>
         </div>
         </div>
       </div>
@@ -25,194 +32,60 @@ get_header();
         <div class="catalog-filter_wrap">
           <div class="catalog-filter">
             <div class="filters">
-              <button class="filter-btn active">Все интерактивы</button>
-              <button class="filter-btn">Хиты сезона 🔥</button>
-              <button class="filter-btn">Фотобудки</button>
-              <button class="filter-btn">AI Интерактивы 🤖</button>
-              <button class="filter-btn">Новинки ⭐</button>
-              <button class="filter-btn">Фото</button>
-              <button class="filter-btn">Видео</button>
-              <button class="filter-btn">Музыкальные</button>
-              <button class="filter-btn">Тимбилдинг</button>
-              <button class="filter-btn">Корпоратив</button>
-              <button class="filter-btn">Конференция</button>
+              <button class="filter-btn active" data-filter="all">Все интерактивы</button>
+              <button class="filter-btn" data-filter="hit">Хиты сезона 🔥</button>
+              <button class="filter-btn" data-filter="fotobudki">Фотобудки</button>
+              <button class="filter-btn" data-filter="ai-interactivy">AI Интерактивы 🤖</button>
+              <button class="filter-btn" data-filter="new">Новинки ⭐</button>
+              <button class="filter-btn" data-filter="foto">Фото</button>
+              <button class="filter-btn" data-filter="video">Видео</button>
+              <button class="filter-btn" data-filter="muzykalnye">Музыкальные</button>
+              <button class="filter-btn" data-filter="timbilding">Тимбилдинг</button>
+              <button class="filter-btn" data-filter="korporativ">Корпоратив</button>
+              <button class="filter-btn" data-filter="konferentsiya">Конференция</button>
             </div>
           </div>
         </div>
         <!-- Карточки -->
-        <div class="cards-grid">
-          <!-- Карточка 1 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-1.png" alt="Фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Фотобудка</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
+        <div class="cards-grid" id="cards-grid">
+          <?php
+          $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+          $args = array(
+              'post_type'      => 'staff',
+              'posts_per_page' => 8,
+              'post_status'    => 'publish',
+              'orderby'        => 'date',
+              'order'          => 'DESC',
+              'paged'          => $paged,
+          );
 
-          <!-- Карточка 2 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-2.png" alt="Видеоспинер" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Видеоспинер</h3>
-              <div class="card-desc">
-                Создаёт головокружительные видеоклипы с эффектом замедления,
-                готовые для размещения в социальных...
-              </div>
-            </div>
-          </div>
+          $staff_query = new WP_Query($args);
 
-          <!-- Карточка 3 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-3.png" alt="AI-фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">AI-фотобудка</h3>
-              <div class="card-desc">
-                Многоновая печать фотографий обработанных нейросетью в режиме
-                реального времени по заданным
-              </div>
-            </div>
-          </div>
+          if ($staff_query->have_posts()) :
+              while ($staff_query->have_posts()) : $staff_query->the_post();
+                  get_template_part('template-parts/content', 'card');
+              endwhile;
+          else :
+              echo '<p>Нет доступных интерактивов.</p>';
+          endif;
 
-          <!-- Карточка 4 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-4.png" alt="Скетч-бот" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Скетч-бот</h3>
-              <div class="card-desc">
-                Рисует портрет в режиме реального времени по фотографии
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 5 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Селфи-зеркало</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
-          <!--  -->
-          <!-- Карточка 6 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-1.png" alt="Фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Фотобудка</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 7 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-2.png" alt="Видеоспинер" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Видеоспинер</h3>
-              <div class="card-desc">
-                Создаёт головокружительные видеоклипы с эффектом замедления,
-                готовые для размещения в социальных...
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 8 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-3.png" alt="AI-фотобудка" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">AI-фотобудка</h3>
-              <div class="card-desc">
-                Многоновая печать фотографий обработанных нейросетью в режиме
-                реального времени по заданным
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 9 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-4.png" alt="Скетч-бот" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge new">Новинка</span>
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Скетч-бот</h3>
-              <div class="card-desc">
-                Рисует портрет в режиме реального времени по фотографии
-              </div>
-            </div>
-          </div>
-
-          <!-- Карточка 10 -->
-          <div class="card">
-            <div class="card-image-wrapper">
-              <img src="/images/img-5.png" alt="Селфи-зеркало" class="card-image" />
-              <div class="badge-wrap">
-                <span class="badge hit">Хит 🔥</span>
-              </div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Селфи-зеркало</h3>
-              <div class="card-desc">
-                Фотографирует и моментально печатает снимки с вашим логотипом
-              </div>
-            </div>
-          </div>
+          wp_reset_postdata();
+          ?>
         </div>
+
         <div class="btn-catalog">
-          <button class="btn-grey btn-more">Показать ещё</button>
+          <?php if ($staff_query->max_num_pages > 1) : ?>
+            <button class="btn-grey btn-more"
+                    id="load-more"
+                    data-page="1"
+                    data-max-pages="<?php echo $staff_query->max_num_pages; ?>"
+                    data-post-type="staff">
+              Показать ещё
+            </button>
+            <div class="loading-spinner" id="loading-spinner" style="display: none;">
+              Загрузка...
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </section>
