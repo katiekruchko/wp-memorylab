@@ -11,7 +11,7 @@ if (isset($args) && isset($args['post_id'])) {
 }
 
 // Изображение
-$image_url = get_the_post_thumbnail_url($post_id, 'medium');
+$image_url = get_the_post_thumbnail_url($post_id, 'large');
 if (!$image_url) {
     $image_url = get_template_directory_uri() . '/images/placeholder.png';
 }
@@ -26,9 +26,11 @@ if (empty($excerpt)) {
     $content = get_the_content(null, false, $post_id);
     $excerpt = wp_trim_words($content, 20, '...');
 }
+// URL поста
+$post_url = get_permalink($post_id);
 ?>
 
-<div class="card">
+<a href="<?php echo esc_url($post_url); ?>" class="card">
     <div class="card-image-wrapper">
         <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>" class="card-image" />
         <div class="badge-wrap">
@@ -45,4 +47,4 @@ if (empty($excerpt)) {
             <?php echo esc_html($excerpt); ?>
         </div>
     </div>
-</div>
+</a>

@@ -17,6 +17,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MemoryLab</title>
   <!-- <link rel="stylesheet" href="scss/styles.scss"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="/scss/index.css">
   <link rel="stylesheet" href="/scss/secondary.css">
   <!-- <link rel="stylesheet" href="scss/main.css"> -->
@@ -40,7 +41,7 @@
         </ul>
       </div>
       <div class="header-logo">
-        <a href="/"><img src="/images/logo.svg" alt="Logo memory lab" /></a>
+        <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Logo memory lab" /></a>
       </div>
 
       <div class="header-social">
@@ -53,19 +54,19 @@
             </div>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="/images/telegram.svg" alt="telegram" /></a>
+            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="telegram" /></a>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="/images/viber.svg" alt="telegram" /></a>
+            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="telegram" /></a>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="/images/instagram.svg" alt="telegram" /></a>
+            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="telegram" /></a>
           </div>
         </div>
       </div>
       <div class="mob-burger">
         <button id="burger-menu" class="mm-burger-btn">
-          <img src="/images/burger.svg" alt="">
+          <img src="<?php echo get_template_directory_uri(); ?><?php echo get_template_directory_uri(); ?>/images/burger.svg" alt="">
         </button>
       </div>
     </div>
@@ -77,8 +78,8 @@
    <!-- mobole menu -->
    <div class="mm-sidebar">
      <div class="mm-sidebar-header">
-       <a href="/"><img src="/images/logo.svg" alt="Memory Lab" class="mm-logo" /></a>
-       <button class="mm-close-btn"><img src="/images/close.svg" alt=""></button>
+       <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Memory Lab" class="mm-logo" /></a>
+       <button class="mm-close-btn"><img src="<?php echo get_template_directory_uri(); ?>/images/close.svg" alt=""></button>
      </div>
  
      <nav class="mm-nav">
@@ -92,9 +93,9 @@
          <div class="mm-contact-name">Алексей</div>
          <div class="mm-contact-phone"><a href="tel:+375298210398">+375 29 821 03 98</a></div>
          <div class="mm-contact-icons">
-           <a href="#" class="mm-icon-btn soc-hover"><img src="/images/telegram.svg" alt="Telegram" /></a>
-           <a href="#" class="mm-icon-btn soc-hover"><img src="/images/viber.svg" alt="Viber" /></a>
-           <a href="#" class="mm-icon-btn soc-hover"><img src="/images/whatsapp.svg" alt="WhatsApp" /></a>
+           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="Telegram" /></a>
+           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="Viber" /></a>
+           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
          </div>
        </div>
      </div>

@@ -244,3 +244,21 @@
 [24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 285
 [24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 286
 [24-Dec-2025 07:58:02 UTC] PHP Warning:  Cannot modify header information - headers already sent in /var/www/html/wp-content/themes/memorylab/functions.php on line 287
+[29-Dec-2025 13:58:08 UTC] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in D:\openserver3\OpenServer\domains\memorylab.by\wp-content\plugins\pods\components\Templates\class-pods_templates.php on line 18
+[29-Dec-2025 13:59:01 UTC] Automatic updates starting...
+[29-Dec-2025 13:59:02 UTC]   Automatic plugin updates starting...
+[29-Dec-2025 13:59:02 UTC]   Automatic plugin updates complete.
+[29-Dec-2025 13:59:04 UTC] Automatic updates complete.
+[06-Jan-2026 10:47:30 UTC] Automatic updates starting...
+[06-Jan-2026 10:47:32 UTC]   Automatic plugin updates starting...
+[06-Jan-2026 10:47:32 UTC]   Automatic plugin updates complete.
+[06-Jan-2026 10:47:33 UTC] Automatic updates complete.
+[06-Jan-2026 11:26:31 UTC] WordPress database error Deadlock found when trying to get lock; try restarting transaction for query DELETE FROM `wp_options` WHERE `option_name` = '_transient_pods_pods_flush_rewrites-334' made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('wp_loaded'), WP_Hook->do_action, WP_Hook->apply_filters, PodsInit->flush_rewrite_rules, pods_transient_clear, pods_view_clear, PodsView::clear, delete_transient, delete_option
+[06-Jan-2026 13:42:55 UTC] Automatic updates starting...
+[06-Jan-2026 13:42:55 UTC]   Automatic plugin updates starting...
+[06-Jan-2026 13:42:56 UTC]   Automatic plugin updates complete.
+[06-Jan-2026 13:42:56 UTC] Automatic updates complete.
+[06-Jan-2026 14:10:10 UTC] PHP Parse error:  syntax error, unexpected token "endwhile", expecting "elseif" or "else" or "endif" in D:\openserver3\OpenServer\domains\memorylab.by\wp-content\themes\memorylab\single-staff.php on line 597
+[06-Jan-2026 14:27:41 UTC] PHP Parse error:  syntax error, unexpected token "endwhile" in D:\openserver3\OpenServer\domains\memorylab.by\wp-content\themes\memorylab\single-staff.php on line 544
+[06-Jan-2026 14:28:02 UTC] PHP Parse error:  syntax error, unexpected token "endwhile" in D:\openserver3\OpenServer\domains\memorylab.by\wp-content\themes\memorylab\single-staff.php on line 544
+[06-Jan-2026 14:28:07 UTC] PHP Parse error:  syntax error, unexpected token "endwhile" in D:\openserver3\OpenServer\domains\memorylab.by\wp-content\themes\memorylab\single-staff.php on line 544

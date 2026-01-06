@@ -8,35 +8,29 @@ secondary css
   gap: 48px;
   align-items: center;
 }
-
 main.secondary-page {
   margin-top: 160px;
 }
-
 h1.h1-black {
   font-weight: 500;
   font-size: 48px;
   line-height: 100%;
 }
-
 .inner-content p {
   margin-top: 12px;
   font-size: 20px;
   font-weight: 300;
   line-height: 140%;
 }
-
 .inner-content h1 {
   margin-bottom: 24px;
 }
-
 .search-product-wrap {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
 }
-
 .search-input-icon {
   position: absolute;
   left: 16px;
@@ -44,7 +38,6 @@ h1.h1-black {
   /* чтобы не мешал клику по инпуту */
   z-index: 1;
 }
-
 .search-input-icon img {
   width: 18px;
   height: 18px;
@@ -52,7 +45,6 @@ h1.h1-black {
   /* серый цвет по умолчанию */
   transition: filter 0.2s ease;
 }
-
 .search-input {
   background: #eeedf1;
   border: none;
@@ -69,35 +61,27 @@ h1.h1-black {
   /* Фиолетовый курсор */
   transition: background-color 0.2s ease;
 }
-
 .search-input::placeholder {
   color: #999;
 }
-
 .search-input:focus {
   outline: none;
   background: #eeedf1;
 }
-
 .search-input:not(:placeholder-shown) {
   background: #eeedf1;
 }
-
 .search-input:focus:not(:placeholder-shown) {
   background: #eeedf1;
 }
-
 .search-input:not(:placeholder-shown)::placeholder {
   color: transparent;
 }
-
 /* Темнеющая иконка при фокусе или вводе */
-.search-input:focus ~ .search-input-icon img,
-.search-input:not(:placeholder-shown) ~ .search-input-icon img {
+.search-input:focus ~ .search-input-icon img, .search-input:not(:placeholder-shown) ~ .search-input-icon img {
   filter: brightness(0.3);
   /* темнее, как на скриншоте */
 }
-
 /*
 -----------------
 Interactive page
@@ -106,26 +90,22 @@ Interactive page
 .top-page-product {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: auto;
   gap: 20px;
   position: relative;
 }
-
 .swiper-container {
   grid-row: 1 / 2;
   grid-column: 1 / 5;
 }
-
 .top-product-cta {
   grid-row: 1 / 2;
   grid-column: 5 / 6;
 }
-
 .product-main-content {
   grid-row: 2 / 3;
   grid-column: 1 / 5;
 }
-
 .swiper-container {
   width: 100%;
   max-width: 1340px;
@@ -134,30 +114,27 @@ Interactive page
   align-items: stretch;
   height: 600px;
 }
-
 /* Основной слайдер */
 .swiper-main {
   flex: 1;
   position: relative;
 }
-
 .swiper-slide {
   width: 100%;
   border-radius: 32px;
-  height: 600px;
   overflow: hidden;
 }
-
 .swiper-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
-
+.swiper-main:hover .swiper-button-prev, .swiper-main:hover .swiper-button-next {
+  display: flex;
+}
 /* Стрелки основного слайдера */
-.swiper-button-prev,
-.swiper-button-next {
+.swiper-button-prev, .swiper-button-next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -172,53 +149,42 @@ Interactive page
   border: none;
   outline: none;
   pointer-events: none;
+  display: none;
 }
-
 .swiper-button-next:after, .swiper-button-prev:after {
   display: none;
 }
-
 .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
   opacity: 0 !important;
   cursor: auto;
   pointer-events: none;
 }
-
-.swiper-button-prev:not(.swiper-button-disabled),
-.swiper-button-next:not(.swiper-button-disabled) {
+.swiper-button-prev:not(.swiper-button-disabled), .swiper-button-next:not(.swiper-button-disabled) {
   opacity: 1;
   pointer-events: auto;
 }
-
 .swiper-button-prev {
   left: 48px !important;
 }
-
 .swiper-button-next {
   right: 48px !important;
 }
-
-.swiper-container:hover .swiper-button-prev:not(.swiper-button-disabled),
-.swiper-container:hover .swiper-button-next:not(.swiper-button-disabled) {
+.swiper-container:hover .swiper-button-prev:not(.swiper-button-disabled), .swiper-container:hover .swiper-button-next:not(.swiper-button-disabled) {
   opacity: 1;
 }
-
 /* Миниатюры справа */
 .swiper-thumbs-container {
   width: 320px;
   position: relative;
 }
-
 .swiper-thumbs-slider {
   height: 600px;
   overflow: hidden;
   position: relative;
 }
-
 .swiper-thumbs-slider .swiper-wrapper {
   flex-direction: column;
 }
-
 .swiper-thumbs-slider .swiper-slide {
   width: 100%;
   height: 220px;
@@ -228,11 +194,9 @@ Interactive page
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
-
 .swiper-thumbs-slider .swiper-slide:last-child {
   margin-bottom: 0;
 }
-
 .swiper-thumbs-slider .swiper-slide img {
   width: 100%;
   height: 100%;
@@ -240,45 +204,38 @@ Interactive page
   object-position: center;
   border-radius: 24px;
 }
-
 .swiper-thumbs-slider .swiper-slide-thumb-active img {
   border: 4px solid #fff;
   border-radius: 30px;
 }
-
 .swiper-thumbs-slider .swiper-slide-thumb-active {
   position: relative;
   /* Убедитесь, что у слайда есть размеры и он не обрезает псевдоэлемент */
   isolation: isolate;
   /* чтобы z-index внутри работал корректно */
 }
-
 .swiper-thumbs-slider .swiper-slide-thumb-active .wrap-img-thumb {
   padding: 4px;
   background: #ffffff00;
 }
-
 .wrap-img-thumb {
   height: 100%;
 }
-
 .swiper-thumbs-slider .swiper-slide-thumb-active::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -4px;
   left: -4px;
   right: -4px;
   bottom: -4px;
   z-index: -1;
-  background: linear-gradient(93.98deg, #271861 2.4%, #7155DF 57.27%, #E10ADB 99.26%);
+  background: linear-gradient(93.98deg, #271861 2.4%, #7155df 57.27%, #e10adb 99.26%);
   border-radius: inherit;
   /* если у вашего слайда есть border-radius */
   pointer-events: none;
 }
-
 /* Стрелки миниатюр */
-.thumbs-button-prev,
-.thumbs-button-next {
+.thumbs-button-prev, .thumbs-button-next {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -295,38 +252,33 @@ Interactive page
   transition: all 0.3s ease;
   box-shadow: 3px 4px 40px 0px #00000066;
 }
-
-.thumbs-button-prev:not(.swiper-button-disabled),
-.thumbs-button-next:not(.swiper-button-disabled) {
+.thumbs-button-prev:not(.swiper-button-disabled), .thumbs-button-next:not(.swiper-button-disabled) {
   opacity: 1;
   pointer-events: auto;
 }
-
 .thumbs-button-prev {
   top: 24px;
 }
-
 .thumbs-button-next {
   bottom: 24px;
 }
-
 .thumbs-button-prev img {
   transform: rotateZ(90deg);
   transform-origin: center center;
 }
-
 .thumbs-button-next img {
   transform: rotateZ(90deg);
   transform-origin: center center;
 }
-
+/*
+cta block
+*/
 .product-cta {
   background: #ffffff;
   box-shadow: 3px 4px 80px 0px #9c9dae26;
   padding: 20px;
   border-radius: 32px;
 }
-
 .prod-cta-h {
   font-weight: 700;
   font-size: 20px;
@@ -334,7 +286,6 @@ Interactive page
   text-align: center;
   margin-bottom: 8px;
 }
-
 .prod-cta-desc {
   font-weight: 400;
   font-size: 16px;
@@ -342,18 +293,15 @@ Interactive page
   text-align: center;
   color: #707077;
 }
-
 .prod-cta-btns {
   margin-top: 20px;
   row-gap: 8px;
   display: flex;
   flex-direction: column;
 }
-
 .prod-cta-btns a {
   text-decoration: none;
 }
-
 .prod-cta-contact {
   font-weight: 500;
   font-size: 20px;
@@ -368,11 +316,9 @@ Interactive page
   justify-content: center;
   height: 68px;
 }
-
 .prod-cta-contact img {
   padding-left: 12px;
 }
-
 .prod-cta-tel {
   font-weight: 500;
   font-size: 20px;
@@ -386,37 +332,93 @@ Interactive page
   height: 68px;
   color: #ffffff;
 }
-
+.top-cta-desktop {
+  position: relative;
+}
 .top-cta-desktop.fixed {
   position: fixed;
-  top: 20px;
+  top: 232px;
   width: 320px;
   z-index: 99;
   /* чтобы блок не уходил под другие элементы */
 }
-
+/* Полупрозрачный слой */
+.cta-mob-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000066;
+  /* rgba(0,0,0,0.4) */
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.cta-mob-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.cta-open-btn {
+  display: none;
+  background: #ffffff;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: fixed;
+  right: 24px;
+  bottom: 16px;
+  box-shadow: 0px 0px 40px 0px #9C9DAE33;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+/* Показ оверлея при активации */
+.cta-mob-overlay.active {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  /* полупрозрачный фон */
+  z-index: 9999;
+}
+/* Активное модальное состояние: фиксация по центру */
+.top-product-cta.modal-active {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  display: block;
+  /* Добавьте width/max-width, padding и т.д. по дизайну */
+}
+/*
+breadcrumbs
+*/
 .breadcrumbs-wrap {
   margin-bottom: 48px;
   color: #707077;
   font-size: 16px;
 }
-
 .breadcrumbs-wrap a {
   text-decoration: none;
-  color: #0F0F11;
+  color: #0f0f11;
   cursor: pointer;
 }
-
 .breadcrumbs-divider {
   color: #707077;
   font-size: 16px;
   padding: 0 4px;
 }
-
 .product-main-content {
   margin-top: 28px;
 }
-
 /*
 mehanika 
 */
@@ -426,32 +428,172 @@ mehanika
   gap: 24px;
   margin: 0 auto;
 }
-
 /* Заголовок */
 .h2-catalog {
   grid-column: span 3;
 }
-
 .mehanika-wrap {
   margin-top: 120px;
 }
-
 /* Блок с шагами */
 .steps-wrap {
   grid-column: span 3;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 84px;
+  padding: 48px 0;
 }
-
 /* Один шаг */
 .step {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 20px;
+  align-items: center;
 }
-
 .step-number {
+  font-weight: 900;
+  font-style: Black;
+  font-size: 128px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  background: linear-gradient(121.66deg, #ffffff -106.37%, #ff4d00 -10.22%, #dd00ff 83.73%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: rotateZ(15deg);
+}
+.step-content h3 {
+  color: #0f0f11;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.step-content p {
+  color: #707077;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 0;
+  max-width: 808px;
+}
+/* Изображение — 4-я колонка */
+.steps-image {
+  grid-column: 4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.steps-image img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 32px;
+  object-fit: cover;
+  height: 100%;
+}
+.mehanika-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 120px 0 0;
+}
+/*
+blocks with numbers
+*/
+.gap-section {
+  margin-top: 120px;
+}
+.wrap-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 48px;
+}
+.tile-item {
+  position: relative;
+  gap: 20px;
+  opacity: 1;
+  padding: 36px 20px;
+  border-radius: 32px;
+  background-color: #ffffff;
+  box-shadow: 2px 3px 20px 0px #9c9dae1a;
+  position: relative;
+  margin-top: 28px;
+}
+.tile-num {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  background: #0f0f11;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.tile-content {
+  text-align: center;
+}
+h3.tile-h3 {
+  color: #0f0f11;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}
+h3.interactive-h3 {
+  color: #0f0f11;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.tile-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #707077;
+}
+/*
+технический райдер
+*/
+.service-wrap .tile-num {
+  background-color: #fd5b2c;
+}
+/*
+Дополнительные услуги
+*/
+.addition-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.addition-image-wrap {
+  grid-column: span 2;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+.addition-image-wrap img {
+  border-radius: 32px;
+  object-fit: cover;
+  max-width: 660px;
+  height: 320px;
+  width: 100%;
+}
+.addition-content {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+.addition-number {
   font-weight: 900;
   font-style: Black;
   font-size: 128px;
@@ -459,49 +601,153 @@ mehanika
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
-  background: linear-gradient(121.66deg, #FFFFFF -106.37%, #FF4D00 -10.22%, #DD00FF 83.73%);
+  background: linear-gradient(121.66deg, #ffffff -106.37%, #ff4d00 -10.22%, #dd00ff 83.73%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  border: 3px solid #ffffff;
+  transform: rotateZ(15deg);
+  -webkit-text-stroke: 2px #ffffff;
+  position: absolute;
+  top: 0px;
+  left: 32px;
 }
-
-.step-content h3 {
-  margin: 0 0 6px 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.step-content p {
-  margin: 0;
-  color: #666;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-/* Изображение — 4-я колонка */
-.steps-image {
-  grid-column: 4;
+.addition-block {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 10px;
+  flex-direction: column;
+  row-gap: 20px;
+  margin-top: 48px;
 }
-
-.robot-image {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+p.addition-description {
+  margin-bottom: 0;
+}
+/*
+event foto
+*/
+.efoto-wrap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  justify-items: center;
+  margin-top: 48px;
+}
+.efoto-item img {
+  max-width: 100%;
+  border-radius: 32px;
+  height: 569px;
   object-fit: cover;
 }
-
+.efoto-insta {
+  background-color: #271861;
+  border-radius: 32px;
+  background-image: url(../images/bg-block.png);
+  padding: 20px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #707077;
+  background-size: cover;
+}
+.insta-txt {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.33;
+  text-align: center;
+  color: #ffffff;
+}
+.efoto-insta-desktop {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+.efoto-insta-mobile {
+  display: none;
+}
+/*
+faq product section
+*/
+.faq-product-wrap {
+  margin-top: 48px;
+}
+.faq-item {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0px 0px 20px 0px #9C9DAE1A;
+  margin-bottom: 16px;
+  overflow: hidden;
+  padding: 24px;
+}
+.faq-question {
+  display: grid;
+  grid-template-columns: 32px auto 32px;
+  align-items: unset;
+  cursor: pointer;
+  gap: 16px;
+  transition: background-color 0.2s;
+}
+.faq-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(73.44deg, #FFFFFF -37.89%, #FF4D00 29.91%, #DD00FF 96.16%);
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+}
+.faq-question h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #0f0f11;
+}
+.faq-arrow {
+  width: 32px;
+  height: 32px;
+  fill: #999;
+  transition: transform 0.3s ease;
+  justify-self: center;
+  background-image: url(../images/faq-arr.svg);
+  background-size: 100%;
+  background-position: center center;
+}
+.faq-item.active .faq-arrow {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  padding: 0;
+  font-size: 16px;
+  color: #707077;
+  line-height: 1.5;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  font-weight: 400;
+}
+.faq-item.active .faq-answer {
+  padding-top: 20px;
+  max-height: 500px;
+  box-sizing: initial;
+}
+a.btn-more {
+  text-decoration: none;
+}
 @media (max-width: 1919px) {
+  /* Заголовок */
+  /* Блок с шагами */
+  /*
+Дополнительные услуги
+*/
+  /*
+event foto
+*/
   .top-page-product {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     position: relative;
   }
@@ -517,9 +763,112 @@ mehanika
     grid-row: 2 / 3;
     grid-column: 1 / 4;
   }
+  .h2-catalog {
+    grid-column: span 2;
+  }
+  .steps-wrap {
+    grid-column: span 2;
+    gap: 82px;
+  }
+  .steps-image {
+    grid-column: 3;
+  }
+  .step-content p {
+    max-width: 468px;
+  }
+  .addition-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .addition-image-wrap {
+    grid-column: span 1;
+  }
+  .addition-image-wrap img {
+    height: 240px;
+    width: 100%;
+  }
+  .addition-content {
+    grid-column: span 2;
+  }
+  .addition-number {
+    top: 0px;
+    left: 32px;
+  }
+  .addition-block {
+    row-gap: 20px;
+    margin-top: 48px;
+  }
+  .addition-item {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .efoto-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+    margin-top: 48px;
+  }
+  .efoto-item img {
+    max-width: 100%;
+    border-radius: 32px;
+    height: 569px;
+    object-fit: cover;
+  }
+  .efoto-insta {
+    grid-column: span 3;
+    padding: 32px 48px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    width: 100%;
+    max-height: 264px;
+  }
+  .insta-txt {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.33;
+    text-align: center;
+    color: #ffffff;
+  }
+  .efoto-insta-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+  }
+  .efoto-insta-desktop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .insta-qr-foto img {
+    width: 200px;
+    height: 200px;
+  }
+  .insta-txt-1 {
+    text-align: left;
+  }
+  .insta-txt-2 {
+    text-align: right;
+  }
 }
-
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .related-products .cards-grid .card:last-child {
+    display: none;
+  }
+}
 @media (max-width: 1439px) {
+  /* Блок с шагами */
+  /* Заголовок */
+  /*
+Дополнительные услуги
+*/
+  /*
+event foto
+*/
   h1.h1-black {
     font-size: 44px;
   }
@@ -529,24 +878,30 @@ mehanika
   .swiper-thumbs-slider {
     height: 540px;
   }
+  .swiper-thumbs-container {
+    width: 280px;
+  }
   .top-page-product {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     position: relative;
   }
   .swiper-container {
     grid-row: 1 / 2;
-    grid-column: 1 / 5;
+    grid-column: 1 / 4;
   }
   .top-product-cta {
     grid-row: 2 / 3;
-    grid-column: 4 / 5;
+    grid-column: 3 / 4;
+  }
+  .top-cta-desktop.fixed {
+    width: 280px;
+    z-index: 99;
   }
   .product-main-content {
     grid-row: 2 / 3;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
   }
   .thumbs-button-prev {
     top: 16px;
@@ -567,9 +922,133 @@ mehanika
     font-size: 18px;
     margin-top: 18px;
   }
+  .mehanika-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+  }
+  .h2-catalog {
+    grid-column: span 2;
+  }
+  .steps-wrap {
+    grid-column: span 2;
+    gap: 48px;
+  }
+  .steps-image {
+    grid-column: span 2;
+  }
+  .steps-image img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 32px;
+  }
+  .step-content p {
+    max-width: auto;
+  }
+  .steps-wrap {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    align-items: self-start;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .step-number {
+    align-self: flex-start;
+    line-height: 0.85;
+  }
+  .addition-item {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  .addition-image-wrap {
+    grid-column: span 1;
+  }
+  .addition-image-wrap img {
+    height: 320px;
+    width: 100%;
+  }
+  .addition-content {
+    grid-column: span 1;
+  }
+  .addition-number {
+    top: 0px;
+    left: 32px;
+  }
+  .addition-block {
+    row-gap: 48px;
+    margin-top: 48px;
+  }
+  .addition-item {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .addition-item.addition-even {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .efoto-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+    margin-top: 48px;
+  }
+  .efoto-item img {
+    max-width: 100%;
+    border-radius: 32px;
+    height: 540px;
+    object-fit: cover;
+  }
+  .efoto-insta {
+    grid-column: auto;
+    padding: 20px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+  }
+  .insta-txt {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .efoto-insta-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+  }
+  .insta-txt-1 {
+    text-align: center;
+  }
+  .insta-txt-2 {
+    text-align: center;
+  }
+  .insta-qr-foto img {
+    width: 220px;
+    height: 220px;
+  }
 }
-
 @media (max-width: 1000px) {
+  /*
+  slider
+  */
+  /* Блок миниатюр под слайдером */
+  /* Стрелки миниатюр — слева и справа */
+  /*
+Дополнительные услуги
+*/
+  .gap-section {
+    margin-top: 120px;
+  }
   main.secondary-page {
     margin-top: 140px;
   }
@@ -579,9 +1058,6 @@ mehanika
   .search-input {
     height: 44px;
   }
-  /*
-  slider
-  */
   .swiper-container {
     flex-direction: column;
     align-items: center;
@@ -595,7 +1071,6 @@ mehanika
   .swiper-slide img {
     object-position: center;
   }
-  /* Блок миниатюр под слайдером */
   .swiper-thumbs-container {
     width: 100%;
     margin-top: 0;
@@ -626,9 +1101,7 @@ mehanika
   .swiper-thumbs-slider .swiper-slide:last-child {
     margin-right: 0;
   }
-  /* Стрелки миниатюр — слева и справа */
-  .thumbs-button-prev,
-.thumbs-button-next {
+  .thumbs-button-prev, .thumbs-button-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -653,7 +1126,6 @@ mehanika
   .top-page-product {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     position: relative;
   }
@@ -663,6 +1135,12 @@ mehanika
   }
   .top-product-cta {
     display: none;
+  }
+  .top-cta-desktop.fixed {
+    width: 320px;
+  }
+  .mehanika-wrap {
+    margin-top: 80px;
   }
   .product-main-content {
     grid-row: 2 / 3;
@@ -678,14 +1156,85 @@ mehanika
   .product-main-content {
     margin-top: 16px;
   }
+  .addition-item {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .addition-image-wrap {
+    grid-column: span 1;
+  }
+  .addition-image-wrap img {
+    height: 320px;
+    width: 100%;
+  }
+  .addition-content {
+    grid-column: span 1;
+    padding-left: 0;
+  }
+  .addition-number {
+    top: 0px;
+    left: 32px;
+  }
+  .addition-block {
+    row-gap: 20px;
+    margin-top: 36px;
+  }
+  .addition-item.addition-even {
+    display: grid;
+    flex-direction: unset;
+  }
+  .gap-section {
+    margin-top: 80px;
+  }
+  .efoto-insta-desktop {
+    display: none;
+  }
+  .efoto-insta-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+  .insta-round-logo {
+    height: 120px;
+    width: 120px;
+  }
+  a.a-color-btn.instagram-button {
+    width: 100%;
+    padding: 18px 15px;
+    text-align: center;
+    display: inline-block;
+  }
+  .efoto-insta-btn {
+    width: 100%;
+  }
+  .faq-product-wrap {
+    margin-top: 36px;
+  }
+  .cta-open-btn {
+    display: flex;
+  }
+  .top-product-cta {
+    width: 100%;
+    max-width: 334px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 }
-
 @media (max-width: 768px) {
+  /* Заголовок */
+  /*
+Дополнительные услуги
+*/
   main.secondary-page {
     margin-top: 100px;
   }
   h1.h1-black {
     font-size: 32px;
+    text-align: center;
   }
   .search-product-header {
     display: grid;
@@ -735,9 +1284,134 @@ mehanika
     text-align: center;
     margin-top: 12px;
   }
+  .h2-catalog {
+    text-align: center;
+    grid-column: span 2;
+  }
+  .step {
+    gap: 10px;
+  }
+  .steps-wrap {
+    grid-column: span 2;
+    gap: 48px;
+  }
+  .step-number {
+    align-self: center;
+    line-height: 0.85;
+  }
+  .steps-image {
+    grid-column: span 2;
+  }
+  .steps-image img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 32px;
+  }
+  .step-content p {
+    max-width: auto;
+  }
+  .steps-wrap {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    align-items: unset;
+    text-align: center;
+    padding: 36px 0;
+  }
+  .addition-item {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  .addition-image-wrap {
+    grid-column: span 1;
+  }
+  .addition-image-wrap img {
+    height: 320px;
+    width: 100%;
+  }
+  .addition-content {
+    grid-column: span 1;
+  }
+  .addition-number {
+    top: 0px;
+    left: 32px;
+  }
+  .addition-block {
+    row-gap: 32px;
+    margin-top: 36px;
+    text-align: center;
+  }
+  .addition-item {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .addition-item.addition-even {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .efoto-insta-desktop {
+    display: none;
+  }
+  .efoto-insta-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+  }
+  a.a-color-btn.instagram-button {
+    width: 100%;
+    padding: 18px 15px;
+    text-align: center;
+    display: inline-block;
+  }
+  .efoto-insta-btn {
+    width: 100%;
+  }
+  .efoto-wrap {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+    justify-items: center;
+    margin-top: 36px;
+  }
+  .efoto-item img {
+    max-width: 100%;
+    border-radius: 32px;
+    height: 600px;
+    object-fit: cover;
+  }
+  .insta-round-logo {
+    height: 120px;
+    width: 120px;
+  }
+  .efoto-insta {
+    width: 100%;
+    max-height: 336px;
+  }
+  .insta-txt {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.33;
+    text-align: center;
+    color: #ffffff;
+  }
+  .faq-question h3 {
+    font-size: 20px;
+  }
 }
-
+@media (min-width: 768px) and (max-width: 1440px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @media (max-width: 480px) {
+  /*
+Дополнительные услуги
+*/
   main.secondary-page {
     margin-top: 112px;
   }
@@ -785,5 +1459,57 @@ mehanika
   }
   .product-main-content {
     margin-top: 4px;
+  }
+  .addition-item {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  .addition-image-wrap {
+    grid-column: span 1;
+  }
+  .addition-image-wrap img {
+    height: 320px;
+    width: 100%;
+  }
+  .addition-content {
+    grid-column: span 1;
+  }
+  .addition-number {
+    top: 0px;
+    left: 32px;
+  }
+  .addition-block {
+    row-gap: 48px;
+    margin-top: 24px;
+    text-align: center;
+  }
+  .addition-item {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .addition-item.addition-even {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .insta-round-logo {
+    height: 80px;
+    width: 80px;
+  }
+  .insta-round-logo img {
+    height: auto;
+    width: 100%;
+  }
+  .efoto-insta {
+    width: 100%;
+    max-height: 268px;
+  }
+  .insta-txt {
+    font-size: 20px;
+  }
+  a.a-color-btn.instagram-button {
+    padding: 11px 15px;
+  }
+  .faq-product-wrap {
+    margin-top: 24px;
   }
 }
