@@ -16,7 +16,6 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MemoryLab</title>
-  <!-- <link rel="stylesheet" href="scss/styles.scss"> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="/scss/index.css">
   <link rel="stylesheet" href="/scss/secondary.css">
@@ -33,12 +32,22 @@
 <header class="site-header">
     <div class="header-wrap">
       <div class="header-menu">
-        <ul class="header-menu-list">
-          <li class="a-catalog"><a href="/catalog">Каталог аренды</a></li>
-          <li><a href="/blog">Блог</a></li>
-          <li><a href="/calculator-ai">ИИ калькулятор</a></li>
-          <li><a href="/contact">Контакты</a></li>
-        </ul>
+        <?php
+$menu_items = wp_get_nav_menu_items('main');
+
+if ($menu_items) : ?>
+    <ul class="header-menu-list">
+        <?php foreach ($menu_items as $index => $item) : 
+            $item_classes = ($index === 0) ? 'a-catalog' : '';
+        ?>
+            <li class="<?php echo $item_classes; ?>">
+                <a href="<?php echo esc_url($item->url); ?>">
+                    <?php echo esc_html($item->title); ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
       </div>
       <div class="header-logo">
         <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Logo memory lab" /></a>
@@ -66,7 +75,7 @@
       </div>
       <div class="mob-burger">
         <button id="burger-menu" class="mm-burger-btn">
-          <img src="<?php echo get_template_directory_uri(); ?><?php echo get_template_directory_uri(); ?>/images/burger.svg" alt="">
+          <img src="<?php echo get_template_directory_uri(); ?>/images/burger.svg" alt="">
         </button>
       </div>
     </div>
@@ -81,13 +90,20 @@
        <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Memory Lab" class="mm-logo" /></a>
        <button class="mm-close-btn"><img src="<?php echo get_template_directory_uri(); ?>/images/close.svg" alt=""></button>
      </div>
- 
-     <nav class="mm-nav">
-       <a href="#" class="mm-nav-item mm-nav-item--highlight">Каталог аренды</a>
-       <a href="#" class="mm-nav-item">Блог</a>
-       <a href="#" class="mm-nav-item">ИИ калькулятор</a>
-       <a href="#" class="mm-nav-item">Контакты</a>
-     </nav>
+     <?php
+$mobile_menu_items = wp_get_nav_menu_items('main');
+
+if ($mobile_menu_items) : ?>
+    <nav class="mm-nav">
+        <?php foreach ($mobile_menu_items as $index => $item) : 
+            $item_classes = ($index === 0) ? 'mm-nav-item mm-nav-item--highlight' : 'mm-nav-item';
+        ?>
+            <a href="<?php echo esc_url($item->url); ?>" class="<?php echo $item_classes; ?>">
+                <?php echo esc_html($item->title); ?>
+            </a>
+        <?php endforeach; ?>
+    </nav>
+<?php endif; ?>
      <div class="mm-contact-section">
        <div class="mm-contact-card">
          <div class="mm-contact-name">Алексей</div>

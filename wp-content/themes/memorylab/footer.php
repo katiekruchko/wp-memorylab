@@ -10,7 +10,7 @@
  */
 
 ?>
-<section class="contacts-bottom">
+<section id="contacts" class="contacts-bottom">
     <div class="contacts-ml-wrap container">
       <div class="contacts-ml-1">
         <h2 class="contact-ml-h">
@@ -66,17 +66,20 @@
         </div>
         <div class="footer-col footer-col-3">
           <div class="footer-menu">
-            <ul class="footer-menu-ul">
-              <li class="footer-menu-li">
-                <a class="footer-menu-a" href="/">Главная</a>
-              </li>
-              <li class="footer-menu-li">
-                <a class="footer-menu-a" href="/">Каталог интерактивов</a>
-              </li>
-              <li class="footer-menu-li">
-                <a class="footer-menu-a" href="/">Контакты</a>
-              </li>
-            </ul>
+          <?php
+$footer_menu_items = wp_get_nav_menu_items('footer');
+
+if ($footer_menu_items) : ?>
+    <ul class="footer-menu-ul">
+        <?php foreach ($footer_menu_items as $item) : ?>
+            <li class="footer-menu-li">
+                <a class="footer-menu-a" href="<?php echo esc_url($item->url); ?>">
+                    <?php echo esc_html($item->title); ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
           </div>
         </div>
         <div class="footer-col footer-col-4">
@@ -450,6 +453,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   </script>
+
 
 <?php wp_footer(); ?>
 

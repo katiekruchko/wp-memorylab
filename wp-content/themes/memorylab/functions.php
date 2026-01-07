@@ -588,3 +588,21 @@ function memorylab_enqueue_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'memorylab_enqueue_scripts');
+
+
+/**
+ * Add SVG files using admin panel
+ */
+function add_svg_mime_type( $mimes ) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter( 'upload_mimes', 'add_svg_mime_type' );
+
+
+// This theme uses wp_nav_menu() in one location.
+// register_nav_menus(
+//     array(
+//         'menu-1' => esc_html__( 'Primary', 'menopause' ),
+//     )
+// );

@@ -107,7 +107,7 @@ get_header();
     </section>
 
   <!-- AI Calculator -->
-  <section class="ai-service-section">
+  <section id="ai-calculator" class="ai-service-section">
     <div class="ai-service-wrap container">
       <h2 class="ai-service-h">
         Выбор <span class="ai-h2-gradient">нейросети</span>

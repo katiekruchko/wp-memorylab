@@ -96,24 +96,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Инициализация выпадающих списков
-// document
-//   .getElementById("event-type-trigger")
-//   .addEventListener("click", function () {
-//     toggleDropdown("event-type-trigger", "event-type-dropdown");
-//   });
-
-// document
-//   .getElementById("duration-trigger")
-//   .addEventListener("click", function () {
-//     toggleDropdown("duration-trigger", "duration-dropdown");
-//   });
-
-// document
-//   .getElementById("format-trigger")
-//   .addEventListener("click", function () {
-//     toggleDropdown("format-trigger", "format-dropdown");
-//   });
 function safeAddClickListener(triggerId, dropdownId) {
   const trigger = document.getElementById(triggerId);
   if (trigger) {
