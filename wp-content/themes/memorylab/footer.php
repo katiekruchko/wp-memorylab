@@ -35,9 +35,9 @@
                   <a href="tel:+375298210398">+375 29 821 03 98</a>
                 </div>
                 <div class="person-data-soc">
-                  <a href="/" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></a>
-                  <a href="/" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="" /></a>
-                  <a href="/" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="" /></a>
+                  <a href="https://t.me/alexeueasy" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></a>
+                  <a href="viber://chat?number=375298210398" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="" /></a>
+                  <a href="https://wa.me/375298210398?" class="person-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="" /></a>
                 </div>
               </div>
             </div>
@@ -58,10 +58,11 @@
         </div>
         <div class="footer-col footer-col-2">
           <div class="footer-soc-wrap">
-            <a href="/" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></a>
-            <a href="/" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="" /></a>
-            <a href="/" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="" /></a>
+            <a href="https://t.me/alexeueasy" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></a>
+            <a href="iber://chat?number=375298210398" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="" /></a>
+            <a href="https://wa.me/375298210398?" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="" /></a>
             <a href="/" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="" /></a>
+             <a href="mailto:memorylab.by@gmail.com" class="footer-soc"><img src="<?php echo get_template_directory_uri(); ?>/images/gmail.svg" alt="" /></a>
           </div>
         </div>
         <div class="footer-col footer-col-3">
@@ -91,7 +92,9 @@ if ($footer_menu_items) : ?>
   пр-т. Газеты «Звязда», д 49, кв 142.,<br>
   220117
             </div>
-
+<div class="ip-email">
+  <a class="ip-email-a" href="mailto:memorylab.by@gmail.com">memorylab.by@gmail.com</a>
+</div>
           </div>
         </div>
       </div>

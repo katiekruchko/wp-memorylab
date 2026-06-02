@@ -31,6 +31,9 @@
 <?php wp_body_open(); ?>
 <header class="site-header">
     <div class="header-wrap">
+      <div class="header-logo">
+        <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Logo memory lab" /></a>
+      </div>
       <div class="header-menu">
         <?php
 $menu_items = wp_get_nav_menu_items('main');
@@ -49,27 +52,23 @@ if ($menu_items) : ?>
     </ul>
 <?php endif; ?>
       </div>
-      <div class="header-logo">
-        <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Logo memory lab" /></a>
-      </div>
-
       <div class="header-social">
         <div class="header-social_wrap">
           <div class="header-tel">
             <div class="header-tel_wrap">
               <div class="header-tel_item">
-                <a class="header-tel-a" href="tel:+375292720351">+375 29 272 03 51</a>
+                <a class="header-tel-a" href="tel:+375298210398">+375 29 821 03 98</a>
               </div>
             </div>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="telegram" /></a>
+            <a href="https://t.me/alexeueasy"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="telegram" /></a>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="telegram" /></a>
+            <a href="viber://chat?number=375298210398"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="telegram" /></a>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="telegram" /></a>
+            <a href="https://www.instagram.com/memorylab.by?igsh=MWQ0dGtsZXlqMGc5cA%3D%3D&utm_source=qr"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="instagram" /></a>
           </div>
         </div>
       </div>
@@ -109,9 +108,9 @@ if ($mobile_menu_items) : ?>
          <div class="mm-contact-name">Алексей</div>
          <div class="mm-contact-phone"><a href="tel:+375298210398">+375 29 821 03 98</a></div>
          <div class="mm-contact-icons">
-           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="Telegram" /></a>
-           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="Viber" /></a>
-           <a href="#" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
+           <a href="https://t.me/alexeueasy" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="Telegram" /></a>
+           <a href="viber://chat?number=375298210398" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="Viber" /></a>
+           <a href="https://www.instagram.com/memorylab.by?igsh=MWQ0dGtsZXlqMGc5cA%3D%3D&utm_source=qr" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
          </div>
        </div>
      </div>
