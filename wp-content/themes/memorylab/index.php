@@ -9,10 +9,12 @@ get_header();
 ?>
 <main id="primary" class="page main-page site-main">
     <div class="main-hero_3d">
+     
       <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.99/build/spline-viewer.js"></script>
     <div class="spline-wrap"><spline-viewer url="https://prod.spline.design/4S6qrpx2vkEAace7/scene.splinecode"></spline-viewer></div> -->
     </div>
-    <div class="main-hero">
+    <div class="main-hero hero">
+      <!-- <canvas id="bg"></canvas> -->
       <!-- 3D-модель -->
 
       <div class="main-hero_wrap">
@@ -31,7 +33,7 @@ get_header();
             <a class="btn_color btn" href="/catalog">Перейти в каталог</a>
           </div>
           <div class="main-hero_cta_tg">
-            <a class="btn_light btn btn-icon" href="/"><span>Написать в Телеграм</span><span><img class="a-tg"
+            <a class="btn_light btn btn-icon" href="https://t.me/alexeueasy" target="_blank"><span>Написать в Телеграм</span><span><img class="a-tg"
                   src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="" /></span></a>
           </div>
         </div>
@@ -290,13 +292,38 @@ get_header();
 
       <!-- Кнопки поверх всего -->
       <div class="cta-insta">
-        <button class="instagram-button btn">Перейти в инстаграм</button>
+        <button class="instagram-button btn"  onclick="window.open('https://www.instagram.com/memorylab.by', '_blank', 'noopener,noreferrer')">Перейти в инстаграм</button>
         <div class="qr-code">
           <img src="<?php echo get_template_directory_uri(); ?>/images/qr-code-line.svg" alt="" />
         </div>
       </div>
     </section>
   </main>
-
+<!-- qr-code popup -->
+   <div id="qrModal" class="qr-modal-overlay">
+    <div class="qr-popup-card">
+        <div class="qr-popup-inner">
+            <div class="qr-popup-header">
+              <div class="qr-header_logo">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/logo-round.png" alt=" ">
+              </div>
+              <div class="qr-header_desc">
+                <div class="qr-header_desc-h">
+                  Фотобудки ИИ | Скетчбот | Спиннер 360 | Минск | Беларусь
+                </div>
+                <div class="qr-header_desc-name">
+                  @memorylab.by
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="qr-mock-qr">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/qrcode-popup.svg" alt=" ">
+            </div>
+        <button class="qr-close-popup-btn" id="qrClosePopupButton">Закрыть</button>
+    </div>
+</div>
+  <!-- end qr-code popup -->
 <?php
 get_footer();
+

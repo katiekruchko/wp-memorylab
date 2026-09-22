@@ -544,7 +544,7 @@
                 // Показ загрузки
                 const $aiSubmitBtn = $(aiSubmitBtn); // Конвертируем в jQuery объект
                 const originalText = $aiSubmitBtn.text();
-                $aiSubmitBtn.text('Ищем...');
+                $aiSubmitBtn.text('Генерируем...');
                 $aiSubmitBtn.prop('disabled', true);
 
                 // Используем jQuery для resultsContainer

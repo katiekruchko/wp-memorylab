@@ -9,13 +9,14 @@
 
 get_header();
 ?>
+<div class="mm-overlay"></div>
+  <div class="cta-mob-overlay"></div>
+  <div id="cta-open-mob" class="cta-open-btn">
+    <img src="<?php echo get_template_directory_uri(); ?>/images/cta-icon-violet.svg" alt="">
+  </div>
 
 <div class="staff-single">
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-
-
-       
-
 <main id="primary" class="page secondary-page site-main">
     <div class="page-product container">
       <div class="breadcrumbs-wrap">

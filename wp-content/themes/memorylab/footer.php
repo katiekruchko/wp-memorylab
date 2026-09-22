@@ -110,7 +110,7 @@ if ($footer_menu_items) : ?>
       </div>
     </div>
   </footer>
-  <script type="module" src="/js/site.js"></script>
+  <script type="module" src="<?php echo get_template_directory_uri(); ?>/js/site.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -17,9 +17,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MemoryLab</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="/scss/index.css">
-  <link rel="stylesheet" href="/scss/secondary.css">
-  <!-- <link rel="stylesheet" href="scss/main.css"> -->
+ 
+  <!-- <link rel="stylesheet" href="/scss/index.css"> -->
+  <link rel="stylesheet" href="/scss/secondary.css?v=2">
+  <link rel="stylesheet" href="scss/main.css">
+  <link rel="stylesheet" href="/scss/main2.css">
+   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet" />
@@ -34,24 +37,22 @@
       <div class="header-logo">
         <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Logo memory lab" /></a>
       </div>
-      <div class="header-menu">
-        <?php
-$menu_items = wp_get_nav_menu_items('main');
+   <div class="header-menu">
+    <?php
+    $menu_items = wp_get_nav_menu_items('main');
 
-if ($menu_items) : ?>
-    <ul class="header-menu-list">
-        <?php foreach ($menu_items as $index => $item) : 
-            $item_classes = ($index === 0) ? 'a-catalog' : '';
-        ?>
-            <li class="<?php echo $item_classes; ?>">
-                <a href="<?php echo esc_url($item->url); ?>">
-                    <?php echo esc_html($item->title); ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
-      </div>
+    if ($menu_items) : ?>
+        <ul class="header-menu-list">
+            <?php foreach ($menu_items as $item) : ?>
+                <li>
+                    <a href="<?php echo esc_url($item->url); ?>">
+                        <?php echo esc_html($item->title); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
       <div class="header-social">
         <div class="header-social_wrap">
           <div class="header-tel">
@@ -62,10 +63,13 @@ if ($menu_items) : ?>
             </div>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="https://t.me/alexeueasy"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="telegram" /></a>
+            <a href="https://t.me/alexeueasy" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="telegram" /></a>
           </div>
           <div class="header-social_item soc-hover">
-            <a href="viber://chat?number=375298210398"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="telegram" /></a>
+            <a href="viber://chat?number=375298210398" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="telegram" /></a>
+          </div>
+          <div class="header-social_item soc-hover">
+            <a href="https://wa.me/375298210398?" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
           </div>
           <div class="header-social_item soc-hover">
             <a href="https://www.instagram.com/memorylab.by?igsh=MWQ0dGtsZXlqMGc5cA%3D%3D&utm_source=qr"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="instagram" /></a>
@@ -82,37 +86,36 @@ if ($menu_items) : ?>
 
 
    <div class="mm-overlay"></div>
+<!-- mobile menu -->
+<div class="mm-sidebar">
+  <div class="mm-sidebar-header">
+    <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Memory Lab" class="mm-logo" /></a>
+    <button class="mm-close-btn"><img src="<?php echo get_template_directory_uri(); ?>/images/close.svg" alt=""></button>
+  </div>
 
-   <!-- mobole menu -->
-   <div class="mm-sidebar">
-     <div class="mm-sidebar-header">
-       <a href="/"><img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="Memory Lab" class="mm-logo" /></a>
-       <button class="mm-close-btn"><img src="<?php echo get_template_directory_uri(); ?>/images/close.svg" alt=""></button>
-     </div>
-     <?php
-$mobile_menu_items = wp_get_nav_menu_items('main');
+  <?php
+  $mobile_menu_items = wp_get_nav_menu_items('main');
 
-if ($mobile_menu_items) : ?>
-    <nav class="mm-nav">
-        <?php foreach ($mobile_menu_items as $index => $item) : 
-            $item_classes = ($index === 0) ? 'mm-nav-item mm-nav-item--highlight' : 'mm-nav-item';
-        ?>
-            <a href="<?php echo esc_url($item->url); ?>" class="<?php echo $item_classes; ?>">
-                <?php echo esc_html($item->title); ?>
-            </a>
-        <?php endforeach; ?>
-    </nav>
-<?php endif; ?>
-     <div class="mm-contact-section">
-       <div class="mm-contact-card">
-         <div class="mm-contact-name">Алексей</div>
-         <div class="mm-contact-phone"><a href="tel:+375298210398">+375 29 821 03 98</a></div>
-         <div class="mm-contact-icons">
-           <a href="https://t.me/alexeueasy" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="Telegram" /></a>
-           <a href="viber://chat?number=375298210398" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="Viber" /></a>
-           <a href="https://www.instagram.com/memorylab.by?igsh=MWQ0dGtsZXlqMGc5cA%3D%3D&utm_source=qr" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
-         </div>
-       </div>
-     </div>
-   </div>
+  if ($mobile_menu_items) : ?>
+      <nav class="mm-nav">
+          <?php foreach ($mobile_menu_items as $item) : ?>
+              <a href="<?php echo esc_url($item->url); ?>" class="mm-nav-item">
+                  <?php echo esc_html($item->title); ?>
+              </a>
+          <?php endforeach; ?>
+      </nav>
+  <?php endif; ?>
 
+  <div class="mm-contact-section">
+    <div class="mm-contact-card">
+      <div class="mm-contact-name">Алексей</div>
+      <div class="mm-contact-phone"><a href="tel:+375298210398">+375 29 821 03 98</a></div>
+      <div class="mm-contact-icons">
+        <a href="https://t.me/alexeueasy" target="_blank" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt="Telegram" /></a>
+        <a href="viber://chat?number=375298210398" target="_blank" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt="Viber" /></a>
+        <a href="https://wa.me/375298210398?" target="_blank" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt="WhatsApp" /></a>
+        <a href="https://www.instagram.com/memorylab.by?igsh=MWQ0dGtsZXlqMGc5cA%3D%3D&utm_source=qr" target="_blank" class="mm-icon-btn soc-hover"><img src="<?php echo get_template_directory_uri(); ?>/images/instagram.svg" alt="instagram" /></a>
+      </div>
+    </div>
+  </div>
+</div>

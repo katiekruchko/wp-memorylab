@@ -107,10 +107,16 @@ if (!$slider_images || !is_array($slider_images)) {
               <div class="prod-cta-wrap">
                 <div class="prod-cta-h">Хотите заказать?</div>
                 <div class="prod-cta-desc">Выберите любой предпочитаемый способ для связи</div>
+                <div class="prod-cta-tel-wrap"> 
+                <div class="prod-cta-img"><img src="<?php echo get_template_directory_uri(); ?>/images/Aleksei.png" alt=" "></div>
+                <div class="prod-cta-person">
+                  <div class="prod-cta-person-name">Алексей</div>
+                  <a class="prod-cta-person-tel" href="tel:+375298210398">+375 29 821 03 98</a></div>
+                </div>
                 <div class="prod-cta-btns">
                   <a class="prod-cta-contact" href="/">Телеграм <img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt=""></a>
                   <a class="prod-cta-contact" href="/">Viber <img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt=""></a>
-                  <a class="prod-cta-tel" href="tel:+375298210398">+375 29 821 03 98</a>
+                  <a class="prod-cta-contact" href="/">Ватсап <img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt=""></a>
                 </div>
               </div>
             </div>

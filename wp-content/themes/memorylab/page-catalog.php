@@ -9,6 +9,7 @@
 
 get_header();
 ?>
+
 <main id="primary" class="page secondary-page site-main">
 
     <section class="catalog-main container" id="catalog-page">
@@ -93,3 +94,4 @@ get_header();
 
 <?php
 get_footer();
+
