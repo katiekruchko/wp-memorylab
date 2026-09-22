@@ -26,7 +26,6 @@ get_header();
       <div class="page-product-content">
         <div class="top-page-product">
           
-
 		  <?php get_template_part( 'template-parts/content-slider' ); ?>
 
           <div class="product-main-content">
@@ -40,6 +39,7 @@ get_header();
 			<?php get_template_part( 'template-parts/content-mehanika' ); ?>
 			<?php get_template_part( 'template-parts/content-rent' ); ?>
 			<?php get_template_part( 'template-parts/content-addition' ); ?>
+      <?php get_template_part( 'template-parts/content-example' ); ?>
 			<?php get_template_part( 'template-parts/content-service' ); ?>
 			<?php get_template_part( 'template-parts/content-eventfoto' ); ?>
 			<?php get_template_part( 'template-parts/content-faq' ); ?>
@@ -66,7 +66,26 @@ get_header();
   </main>
     <?php endwhile; endif; ?>
 </div>
+<!-- Модальное окно с галереей (Лайтбокс) -->
+  <div class="gallery-modal" id="galleryModal">
+    <div class="gallery-modal__overlay"></div>
+    <div class="gallery-modal__content">
+      <button class="gallery-modal__close" aria-label="Закрыть">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
 
+      <div class="swiper gallery-modal__swiper">
+        <div class="swiper-wrapper">
+          <!-- Слайды будут автоматически добавлены через JS -->
+        </div>
+        <div class="swiper-button-prev gallery-modal__prev"></div>
+        <div class="swiper-button-next gallery-modal__next"></div>
+        <div class="swiper-pagination gallery-modal__pagination"></div>
+      </div>
+    </div>
+  </div>
 
 <?php
 get_footer();

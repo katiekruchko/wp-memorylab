@@ -114,9 +114,9 @@ if (!$slider_images || !is_array($slider_images)) {
                   <a class="prod-cta-person-tel" href="tel:+375298210398">+375 29 821 03 98</a></div>
                 </div>
                 <div class="prod-cta-btns">
-                  <a class="prod-cta-contact" href="/">Телеграм <img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt=""></a>
-                  <a class="prod-cta-contact" href="/">Viber <img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt=""></a>
-                  <a class="prod-cta-contact" href="/">Ватсап <img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt=""></a>
+                  <a class="prod-cta-contact" href="https://t.me/alexeueasy" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt=""></a>
+                  <a class="prod-cta-contact" href="viber://chat?number=375298210398" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt=""></a>
+                  <a class="prod-cta-contact" href="https://wa.me/375298210398?" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt=""></a>
                 </div>
               </div>
             </div>
