@@ -1,8 +1,6 @@
 <?php
 /**
  * For single-staff page, section slider
- *
- * @param int $post_id (optional) ID поста. Если не указан, используется текущий пост
  */
 
 // Получаем текущую запись
@@ -14,62 +12,54 @@ if (!$slider_images || !is_array($slider_images)) {
 }
 ?>
 
+<?php if (!empty($slider_images)): ?>
+
 <div class="swiper-container">
   <!-- main slider -->
   <div class="swiper swiper-main">
     <div class="swiper-wrapper">
-      <?php if (!empty($slider_images)): ?>
-        <?php foreach ($slider_images as $index => $image): ?>
-          <?php
-          $image_id = 0;
-          $large_url = '';
-          $full_url = '';
-          
-          // Определяем ID изображения
-          if (is_array($image) && isset($image['ID'])) {
-              $image_id = $image['ID'];
-          } elseif (is_numeric($image)) {
-              $image_id = $image;
-          }
-          
-          // Получаем URL для разных размеров
-          if ($image_id) {
-              $large_url = wp_get_attachment_image_url($image_id, 'large');
-              $full_url = wp_get_attachment_image_url($image_id, 'full');
-              $medium_url = wp_get_attachment_image_url($image_id, 'medium');
-          } else {
-              // Fallback на pods_image_url если не получили ID
-              $large_url = pods_image_url($image, 'large');
-              $full_url = pods_image_url($image, 'full');
-          }
-          ?>
-          
-          <div class="swiper-slide">
-            <img src="<?php echo esc_url($large_url); ?>" 
-                 srcset="<?php 
-                    if ($medium_url) echo esc_url($medium_url) . ' 768w, ';
-                    if ($large_url) echo esc_url($large_url) . ' 1024w, ';
-                    if ($full_url) echo esc_url($full_url) . ' 1920w';
-                 ?>"
-                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                 alt="Slide <?php echo $index + 1; ?>"
-                 loading="lazy"
-                 width="1200"
-                 height="600">
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
+      <?php foreach ($slider_images as $index => $image): ?>
+        <?php
+        $image_id = 0;
+        $large_url = '';
+        $full_url = '';
+        $medium_url = '';
+
+        if (is_array($image) && isset($image['ID'])) {
+            $image_id = $image['ID'];
+        } elseif (is_numeric($image)) {
+            $image_id = $image;
+        }
+
+        if ($image_id) {
+            $large_url  = wp_get_attachment_image_url($image_id, 'large');
+            $full_url   = wp_get_attachment_image_url($image_id, 'full');
+            $medium_url = wp_get_attachment_image_url($image_id, 'medium');
+        } else {
+            $large_url = pods_image_url($image, 'large');
+            $full_url  = pods_image_url($image, 'full');
+        }
+        ?>
+
         <div class="swiper-slide">
-          <img src="https://via.placeholder.com/1200x600?text=No+Images" 
-               alt="No images"
-               loading="lazy">
+          <img src="<?php echo esc_url($large_url); ?>"
+               srcset="<?php
+                  if ($medium_url) echo esc_url($medium_url) . ' 768w, ';
+                  if ($large_url)  echo esc_url($large_url)  . ' 1024w, ';
+                  if ($full_url)   echo esc_url($full_url)   . ' 1920w';
+               ?>"
+               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+               alt="Slide <?php echo $index + 1; ?>"
+               loading="lazy"
+               width="1200"
+               height="600">
         </div>
-      <?php endif; ?>
+      <?php endforeach; ?>
     </div>
 
     <!-- навигация -->
-	<div class="swiper-button-prev"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-prev-slider.svg" alt=""></div>
-              <div class="swiper-button-next"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-next-slider.svg" alt=""></div>
+    <div class="swiper-button-prev"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-prev-slider.svg" alt=""></div>
+    <div class="swiper-button-next"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-next-slider.svg" alt=""></div>
   </div>
 
   <!-- thumbnails -->
@@ -77,7 +67,7 @@ if (!$slider_images || !is_array($slider_images)) {
     <div class="swiper swiper-thumbs-slider">
       <div class="swiper-wrapper">
         <?php foreach ($slider_images as $index => $image): ?>
-          <?php 
+          <?php
           $thumb_url = '';
           if (is_array($image) && isset($image['ID'])) {
               $thumb_url = wp_get_attachment_image_url($image['ID'], 'large');
@@ -89,7 +79,7 @@ if (!$slider_images || !is_array($slider_images)) {
           ?>
           <div class="swiper-slide">
             <div class="wrap-img-thumb">
-              <img src="<?php echo esc_url($thumb_url); ?>" 
+              <img src="<?php echo esc_url($thumb_url); ?>"
                    alt="Thumb <?php echo $index + 1; ?>"
                    loading="lazy">
             </div>
@@ -98,26 +88,30 @@ if (!$slider_images || !is_array($slider_images)) {
       </div>
     </div>
     <!-- навигация миниатюр -->
-	<div class="thumbs-button-prev"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-prev-slider.svg" alt=""></div>
-              <div class="thumbs-button-next"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-next-slider.svg" alt=""></div>
+    <div class="thumbs-button-prev"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-prev-slider.svg" alt=""></div>
+    <div class="thumbs-button-next"><img src="<?php echo get_template_directory_uri(); ?>/images/arrow-next-slider.svg" alt=""></div>
   </div>
 </div>
-          <div class="top-product-cta ">
-            <div class="product-cta top-cta-desktop">
-              <div class="prod-cta-wrap">
-                <div class="prod-cta-h">Хотите заказать?</div>
-                <div class="prod-cta-desc">Выберите любой предпочитаемый способ для связи</div>
-                <div class="prod-cta-tel-wrap"> 
-                <div class="prod-cta-img"><img src="<?php echo get_template_directory_uri(); ?>/images/Aleksei.png" alt=" "></div>
-                <div class="prod-cta-person">
-                  <div class="prod-cta-person-name">Алексей</div>
-                  <a class="prod-cta-person-tel" href="tel:+375298210398">+375 29 821 03 98</a></div>
-                </div>
-                <div class="prod-cta-btns">
-                  <a class="prod-cta-contact" href="https://t.me/alexeueasy" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt=""></a>
-                  <a class="prod-cta-contact" href="viber://chat?number=375298210398" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt=""></a>
-                  <a class="prod-cta-contact" href="https://wa.me/375298210398?" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt=""></a>
-                </div>
-              </div>
-            </div>
-          </div>
+
+<div class="top-product-cta ">
+  <div class="product-cta top-cta-desktop">
+    <div class="prod-cta-wrap">
+      <div class="prod-cta-h">Хотите заказать?</div>
+      <div class="prod-cta-desc">Выберите любой предпочитаемый способ для связи</div>
+      <div class="prod-cta-tel-wrap">
+        <div class="prod-cta-img"><img src="<?php echo get_template_directory_uri(); ?>/images/Aleksei.png" alt=" "></div>
+        <div class="prod-cta-person">
+          <div class="prod-cta-person-name">Алексей</div>
+          <a class="prod-cta-person-tel" href="tel:+375298210398">+375 29 821 03 98</a>
+        </div>
+      </div>
+      <div class="prod-cta-btns">
+        <a class="prod-cta-contact" href="https://t.me/alexeueasy" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/telegram.svg" alt=""></a>
+        <a class="prod-cta-contact" href="viber://chat?number=375298210398" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/viber.svg" alt=""></a>
+        <a class="prod-cta-contact" href="https://wa.me/375298210398?" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/whatsapp.svg" alt=""></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php endif; ?>
