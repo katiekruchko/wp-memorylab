@@ -172,8 +172,8 @@ function load_more_posts() {
         'paged'          => $page,
     );
 
-    // Добавляем текстовый поиск если есть
-    if (!empty($search) && strlen($search) >= 2) {
+    // Добавляем текстовый поиск если есть (минимум 3 символа)
+    if (!empty($search) && strlen($search) >= 3) {
         $args['s'] = $search;
     }
 
@@ -205,10 +205,15 @@ function load_more_posts() {
         $filter_name = get_term_display_name($filter);
     }
 
+    $has_more = false;
+
     if ($query->have_posts()) :
         while ($query->have_posts()) : $query->the_post();
             get_template_part('template-parts/content', 'card');
         endwhile;
+
+        // Есть ли ещё посты для загрузки?
+        $has_more = ($page < $query->max_num_pages);
     else :
         if ($page == 1) {
             // Только для первой страницы показываем сообщение
@@ -223,10 +228,11 @@ function load_more_posts() {
                 echo '<p>Интерактивов не найдено.</p>';
             }
             echo '</div>';
-        } else {
-            echo '<p class="no-more-posts" style="display:none;"></p>';
         }
     endif;
+
+    // МАРКЕР: есть ли ещё посты
+    echo '<span class="ajax-meta" data-has-more="' . ($has_more ? '1' : '0') . '" style="display:none;"></span>';
 
     wp_reset_postdata();
     wp_die();
@@ -294,7 +300,7 @@ function search_products_ajax() {
     $search_term = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
     $filter = isset($_POST['filter']) ? sanitize_text_field($_POST['filter']) : 'all';
 
-    if (empty($search_term) || strlen($search_term) < 2) {
+    if (empty($search_term) || strlen($search_term) < 3) {
         wp_die();
     }
 
@@ -383,8 +389,8 @@ function combined_search_ajax() {
         'paged'          => $page,
     );
 
-    // Добавляем текстовый поиск
-    if (!empty($search_term) && strlen($search_term) >= 2) {
+    // Добавляем текстовый поиск (минимум 3 символа)
+    if (!empty($search_term) && strlen($search_term) >= 3) {
         $args['s'] = $search_term;
 
         // Расширяем поиск на таксономии
@@ -441,12 +447,17 @@ function combined_search_ajax() {
         $filter_name = get_term_display_name($filter);
     }
 
+    $has_more = false;
+
     if ($query->have_posts()) {
         while ($query->have_posts()) : $query->the_post();
             get_template_part('template-parts/content', 'card');
         endwhile;
 
-        // Добавляем информацию о количестве найденных результатов
+        // Есть ли ещё посты?
+        $has_more = ($page < $query->max_num_pages);
+
+        // Информация о количестве (для совместимости)
         if ($page == 1) {
             echo '<div class="search-info" style="display: none;" data-total="' . $found_posts . '"></div>';
         }
@@ -464,6 +475,9 @@ function combined_search_ajax() {
         }
         echo '</div>';
     }
+
+    // МАРКЕР: есть ли ещё посты
+    echo '<span class="ajax-meta" data-has-more="' . ($has_more ? '1' : '0') . '" style="display:none;"></span>';
 
     wp_reset_postdata();
     wp_die();
@@ -496,13 +510,12 @@ function ai_calculator_search() {
 
     // Подготавливаем параметры для поиска
     $params = array(
-        'limit'   => 8, // Максимум 2 сущности
-        'orderby' => 'RAND()', // Случайный порядок
+        'limit'   => 8,
+        'orderby' => 'RAND()',
         'where'   => array(),
     );
 
     // Добавляем фильтрацию по количеству участников
-    // Pods использует синтаксис {meta_key}.meta_value для кастомных полей
     $params['where'][] = "number_of_attendees.meta_value >= $people_count";
 
     // Добавляем фильтрацию по таксономиям, если они выбраны
@@ -567,7 +580,7 @@ function memorylab_enqueue_scripts() {
         'universal-ajax',
         get_template_directory_uri() . '/js/universal-ajax.js',
         array('jquery'),
-        '1.0.0',
+        '1.0.1', // обновили версию, чтобы сбросить кэш
         true
     );
 
@@ -589,7 +602,6 @@ function memorylab_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'memorylab_enqueue_scripts');
 
-
 /**
  * Add SVG files using admin panel
  */
@@ -598,11 +610,3 @@ function add_svg_mime_type( $mimes ) {
     return $mimes;
 }
 add_filter( 'upload_mimes', 'add_svg_mime_type' );
-
-
-// This theme uses wp_nav_menu() in one location.
-// register_nav_menus(
-//     array(
-//         'menu-1' => esc_html__( 'Primary', 'menopause' ),
-//     )
-// );

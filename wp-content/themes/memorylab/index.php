@@ -90,21 +90,20 @@ get_header();
           wp_reset_postdata();
           ?>
         </div>
-
         <div class="btn-catalog">
-          <?php if ($staff_query->max_num_pages > 1) : ?>
-            <button class="btn-grey btn-more"
-                    id="home-load-more"
-                    data-page="1"
-                    data-max-pages="<?php echo $staff_query->max_num_pages; ?>"
-                    data-post-type="staff">
-              Показать ещё
-            </button>
-            <div class="loading-spinner" id="home-loading-spinner" style="display: none;">
-              Загрузка...
-            </div>
-          <?php endif; ?>
-        </div>
+  <?php if ($staff_query->max_num_pages > 1) : ?>
+    <button class="btn-grey btn-more"
+            id="home-load-more"
+            data-page="2"
+            data-max-pages="<?php echo $staff_query->max_num_pages; ?>"
+            data-post-type="staff">
+      Показать ещё
+    </button>
+    <div class="loading-spinner" id="home-loading-spinner" style="display: none;">
+      Загрузка...
+    </div>
+  <?php endif; ?>
+</div>
       </div>
     </section>
 

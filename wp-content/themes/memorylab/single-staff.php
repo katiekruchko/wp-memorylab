@@ -40,11 +40,11 @@ get_header();
 			<?php get_template_part( 'template-parts/content-rent' ); ?>
 			<?php get_template_part( 'template-parts/content-addition' ); ?>
       <?php get_template_part( 'template-parts/content-example' ); ?>
+      <?php get_template_part( 'template-parts/content-ramki' ); ?>
+      <?php get_template_part( 'template-parts/content-video' ); ?>
 			<?php get_template_part( 'template-parts/content-service' ); ?>
 			<?php get_template_part( 'template-parts/content-eventfoto' ); ?>
 			<?php get_template_part( 'template-parts/content-faq' ); ?>
-			
-		
           
           <section class="related-products gap-section">
             <div class="catalog-header">

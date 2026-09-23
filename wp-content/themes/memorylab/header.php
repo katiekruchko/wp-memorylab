@@ -19,15 +19,116 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
  
   <!-- <link rel="stylesheet" href="/scss/index.css"> -->
-  <link rel="stylesheet" href="/scss/secondary.css?v=2">
-  <link rel="stylesheet" href="scss/main.css">
-  <link rel="stylesheet" href="/scss/main2.css">
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/scss/secondary.css?v=2">
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/scss/main.css">
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/scss/main2.css">
    
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet" />
   <script type="module" src="/js/main.js"></script>
 	<?php wp_head(); ?>
+  <style>
+/* ============================================
+   SKELETON LOADER
+   ============================================ */
+
+/* Базовый скелетон-элемент с эффектом мерцания */
+.skeleton-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0 0 20px 0;
+  /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); */
+  animation: skeleton-fade-in 0.3s ease;
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #EEEDF199;
+  border-radius: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-line {
+  height: 16px;
+  background: #EEEDF199;
+  border-radius: 12px;
+  margin: 0 20px 10px 0px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-line.title {
+  height: 20px;
+  width: 70%;
+  margin-bottom: 8px;
+}
+
+.skeleton-line.short {
+  width: 45%;
+}
+
+.skeleton-line.medium {
+  width: 85%;
+}
+
+/* Эффект "шиммера" (бегущий блик) */
+.skeleton-image::after,
+.skeleton-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { left: -150%; }
+  100% { left: 150%; }
+}
+
+@keyframes skeleton-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Сетка скелетонов повторяет сетку cards-grid */
+.cards-grid .skeleton-card {
+  display: block;
+}
+
+/* Инлайновый скелетон для AI-блока */
+.ai-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+}  
+/* Подсказка поиска */
+.search-hint {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+/* Скрыть старые спиннеры (на всякий случай) */
+.loading-spinner { display: none !important; } 
+  </style>
 </head>
 
 <body <?php body_class(); ?>>

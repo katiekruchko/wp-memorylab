@@ -1,5 +1,95 @@
-(function($) {
+(function ($) {
     'use strict';
+
+    // ========================
+    // SKELETON HELPERS
+    // ========================
+
+    /**
+     * Генерирует HTML скелетонов карточек
+     * @param {number} count - количество скелетонов
+     * @returns {string} HTML-строка
+     */
+    function generateSkeletons(count) {
+        count = count || 8;
+        var html = '';
+        for (var i = 0; i < count; i++) {
+            html +=
+                '<div class="skeleton-card">' +
+                '<div class="skeleton-image"></div>' +
+                '<div class="skeleton-line title"></div>' +
+                '<div class="skeleton-line medium"></div>' +
+                '<div class="skeleton-line short"></div>' +
+                '</div>';
+        }
+        return html;
+    }
+
+    /**
+     * Полностью заменяет содержимое контейнера скелетонами
+     */
+    function showSkeletons($container, count) {
+        $container.html(generateSkeletons(count || 8));
+    }
+
+    /**
+     * Добавляет скелетоны в конец контейнера
+     */
+    function appendSkeletons($container, count) {
+        $container.append(generateSkeletons(count || 4));
+    }
+
+    /**
+     * Удаляет все скелетоны из контейнера
+     */
+    function removeSkeletons($container) {
+        $container.find('.skeleton-card').remove();
+    }
+
+    /**
+     * Проверяет, есть ли ещё посты по маркеру из ответа сервера
+     * @param {string} response - HTML ответа
+     * @returns {boolean}
+     */
+    function hasMorePosts(response) {
+        if (response.indexOf('no-more-posts') !== -1) return false;
+        if (response.indexOf('no-results-message') !== -1) return false;
+
+        var match = response.match(/data-has-more="([01])"/);
+        if (match) {
+            return match[1] === '1';
+        }
+
+        // Безопасный дефолт — не показывать кнопку
+        return false;
+    }
+
+    /**
+     * Вставляет карточки из ответа сервера в сетку,
+     * предварительно удалив служебные элементы (ajax-meta, search-info и т.д.)
+     */
+    function appendCardsFromResponse($cardsGrid, response) {
+        var $temp = $('<div>').html(response);
+
+        // Убираем служебные элементы
+        $temp.find('.ajax-meta, .search-info, .no-results-message, .no-more-posts').remove();
+
+        // Вставляем все оставшиеся карточки (.card)
+        var $newCards = $temp.find('.card');
+        if ($newCards.length > 0) {
+            $cardsGrid.append($newCards);
+        }
+
+        return $newCards.length;
+    }
+
+    /**
+     * Считает количество карточек (.card) в HTML-ответе
+     */
+    function countCardsInResponse(response) {
+        var $temp = $('<div>').html(response);
+        return $temp.find('.card').length;
+    }
 
     /**
      * Инициализация каталога на странице
@@ -28,17 +118,18 @@
         var currentPage = 1;
         var searchTimeout;
         var DEBOUNCE_DELAY = 300;
-        var MIN_SEARCH_LENGTH = 2;
+        var MIN_SEARCH_LENGTH = 3; // Минимум 3 символа для поиска
+        var PAGE_SIZE = 8;          // Должно совпадать с posts_per_page в PHP
 
         // ========================
-        // ФУНКЦИИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ (без поиска)
+        // ГЛАВНАЯ СТРАНИЦА (без поиска)
         // ========================
 
         if (isHomePage) {
             console.log('Setting up home page catalog (no search)');
 
-            // Обработчик фильтров для главной
-            $filters.on('click', '.filter-btn', function(e) {
+            // Обработчик фильтров
+            $filters.on('click', '.filter-btn', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -47,92 +138,79 @@
 
                 console.log('Home filter clicked:', newFilter);
 
-                // Если фильтр не изменился
                 if (newFilter === currentFilter) {
                     return;
                 }
 
-                // Обновляем активный фильтр
                 currentFilter = newFilter;
                 currentPage = 1;
 
-                // Обновляем UI
                 $filters.find('.filter-btn').removeClass('active');
                 $button.addClass('active');
 
-                // Загружаем отфильтрованные посты
                 loadHomeFilteredPosts();
             });
 
-            // Обработчик кнопки "Показать ещё" для главной
-            $loadMoreBtn.on('click', function(e) {
+            // Кнопка "Показать ещё" на главной
+            $loadMoreBtn.on('click', function (e) {
                 e.preventDefault();
 
                 var $button = $(this);
                 var page = parseInt($button.data('page')) || 1;
-                var maxPages = parseInt($button.data('max-pages')) || 1;
 
-                console.log('Home load more clicked. Page:', page, 'Max:', maxPages);
-
-                if (page >= maxPages) {
-                    $button.hide();
-                    return;
-                }
+                console.log('Home load more clicked. Page:', page);
 
                 $button.hide();
-                if ($loadingSpinner.length) {
-                    $loadingSpinner.show();
-                }
 
-                var postData = {
-                    action: 'load_more_posts',
-                    page: page,
-                    post_type: $button.data('post-type') || 'staff',
-                    filter: currentFilter,
-                    nonce: ajax_params.nonce
-                };
+                // Скелетоны внизу
+                appendSkeletons($cardsGrid, 4);
 
                 $.ajax({
                     url: ajax_params.ajax_url,
                     type: 'POST',
-                    data: postData,
-                    success: function(response) {
-                        if ($loadingSpinner.length) {
-                            $loadingSpinner.hide();
+                    data: {
+                        action: 'load_more_posts',
+                        page: page,
+                        post_type: $button.data('post-type') || 'staff',
+                        filter: currentFilter,
+                        nonce: ajax_params.nonce
+                    },
+                    success: function (response) {
+                        removeSkeletons($cardsGrid);
+
+                        var $temp = $('<div>').html(response);
+                        var $newCards = $temp.find('.card');
+                        var hasMore = hasMorePosts(response);
+
+                        if ($newCards.length > 0) {
+                            $cardsGrid.append($newCards);
                         }
 
-                        // Добавляем новые карточки
-                        $cardsGrid.append(response);
+                        // Обновляем номер страницы
+                        $button.data('page', page + 1);
 
-                        var newPage = page + 1;
-                        $button.data('page', newPage);
-
-                        if (newPage >= maxPages ||
-                            response.includes('no-more-posts') ||
-                            response.includes('no-results-message')) {
-                            $button.hide();
-                        } else {
+                        // Показываем кнопку, ТОЛЬКО если сервер сказал "есть ещё"
+                        // И реально пришли карточки
+                        if (hasMore && $newCards.length > 0) {
                             $button.show();
+                        } else {
+                            $button.hide();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Home load more error:', error);
-                        if ($loadingSpinner.length) {
-                            $loadingSpinner.hide();
-                        }
+                        removeSkeletons($cardsGrid);
                         $button.show();
                     }
                 });
             });
 
-            // Функция загрузки отфильтрованных постов для главной
+            // Загрузка отфильтрованных постов на главной
             function loadHomeFilteredPosts() {
                 console.log('Loading home filtered posts:', currentFilter);
 
-                if ($loadingSpinner.length) {
-                    $loadingSpinner.show();
-                }
                 $loadMoreBtn.hide();
+                showSkeletons($cardsGrid, 8);
 
                 $.ajax({
                     url: ajax_params.ajax_url,
@@ -144,48 +222,48 @@
                         post_type: $loadMoreBtn.data('post-type') || 'staff',
                         nonce: ajax_params.nonce
                     },
-                    success: function(response) {
-                        if ($loadingSpinner.length) {
-                            $loadingSpinner.hide();
-                        }
+                    success: function (response) {
+                        // Считаем карточки ДО удаления маркера
+                        var cardCount = countCardsInResponse(response);
 
-                        // Заменяем все карточки
                         $cardsGrid.html(response);
+                        $cardsGrid.find('.ajax-meta').remove();
 
-                        // Сбрасываем счетчик страниц
-                        currentPage = 1;
-                        $loadMoreBtn.data('page', currentPage);
+                        // Первая страница загружена — следующая для "Показать ещё" = 2
+                        currentPage = 2;
+                        $loadMoreBtn.data('page', 2);
 
-                        // Показываем кнопку если есть что грузить
-                        if (!response.includes('no-more-posts') &&
-                            !response.includes('no-results-message')) {
-                            // Проверяем количество загруженных карточек
-                            var cardCount = $cardsGrid.find('.staff-card').length;
-                            if (cardCount >= 6) {
-                                $loadMoreBtn.show();
-                            }
+                        console.log('Home filter result: cards =', cardCount, ', has-more =', hasMorePosts(response));
+
+                        // Показываем кнопку ТОЛЬКО если:
+                        // 1. Сервер сказал has-more=1
+                        // 2. Вернулась полная партия (8 карточек) — значит, точно есть продолжение
+                        if (hasMorePosts(response) && cardCount >= PAGE_SIZE) {
+                            $loadMoreBtn.show();
+                        } else {
+                            $loadMoreBtn.hide();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Home filter error:', error);
-                        if ($loadingSpinner.length) {
-                            $loadingSpinner.hide();
-                        }
-                        $loadMoreBtn.show();
+                        $cardsGrid.html(
+                            '<p class="no-results-message">Ошибка загрузки.</p>'
+                        );
+                        $loadMoreBtn.hide();
                     }
                 });
             }
 
             console.log('Home page catalog initialized successfully');
-            return; // Завершаем инициализацию для главной
+            return;
         }
 
         // ========================
-        // ФУНКЦИИ ДЛЯ СТРАНИЦЫ КАТАЛОГА (с поиском)
+        // СТРАНИЦА КАТАЛОГА (с поиском)
         // ========================
 
         // Обработчик фильтров
-        $filters.on('click', '.filter-btn', function(e) {
+        $filters.on('click', '.filter-btn', function (e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -194,28 +272,24 @@
 
             console.log('Catalog filter clicked:', newFilter, 'Current filter:', currentFilter, 'Current search:', currentSearch);
 
-            // Если фильтр не изменился
             if (newFilter === currentFilter) {
                 return;
             }
 
-            // Обновляем активный фильтр
             currentFilter = newFilter;
             currentPage = 1;
 
-            // Обновляем UI
             $filters.find('.filter-btn').removeClass('active');
             $button.addClass('active');
 
-            // Выполняем комбинированный поиск
             performCombinedSearch();
         });
 
-        // Обработчик поиска
+        // Поиск
         if (hasSearch && $searchInput) {
             console.log('Search initialized for catalog page');
 
-            $searchInput.on('input', function() {
+            $searchInput.on('input', function () {
                 clearTimeout(searchTimeout);
 
                 var searchTerm = $(this).val().trim();
@@ -227,40 +301,50 @@
                     $searchInput.next('.clear-search-icon').hide();
                 }
 
-                // Если поле очищено
+                // Если поле очищено — показываем всё
                 if (searchTerm.length === 0) {
                     currentSearch = '';
                     currentPage = 1;
 
-                    // Если нет активного фильтра - показываем все
                     if (currentFilter === 'all') {
                         loadInitialPosts();
                     } else {
-                        // Иначе применяем только фильтр
                         performCombinedSearch();
                     }
                     return;
                 }
 
-                // Обновляем переменные
+                // Меньше 3 символов — показываем подсказку, не ищем
+                if (searchTerm.length < MIN_SEARCH_LENGTH) {
+                    currentSearch = '';
+                    currentPage = 1;
+
+                    $loadMoreBtn.hide();
+                    $cardsGrid.html(
+                        '<p class="search-hint">Введите минимум ' +
+                        MIN_SEARCH_LENGTH +
+                        ' символа для поиска</p>'
+                    );
+                    return;
+                }
+
+                // 3+ символа — ищем
                 currentSearch = searchTerm;
                 currentPage = 1;
 
-                // Debounce для поиска
-                searchTimeout = setTimeout(function() {
+                searchTimeout = setTimeout(function () {
                     performCombinedSearch();
                 }, DEBOUNCE_DELAY);
             });
 
-            // Добавляем кнопку очистки поиска
+            // Кнопка очистки поиска
             if (!$searchInput.next('.clear-search-icon').length) {
                 $searchInput.after(
                     '<span class="clear-search-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; display: none;">✕</span>'
                 );
             }
 
-            // Обработчик кнопки очистки
-            $searchInput.next('.clear-search-icon').on('click', function() {
+            $searchInput.next('.clear-search-icon').on('click', function () {
                 $searchInput.val('');
                 $(this).hide();
                 currentSearch = '';
@@ -274,61 +358,49 @@
             });
         }
 
-        // Обработчик кнопки "Показать ещё" для каталога
-        $loadMoreBtn.on('click', function(e) {
+        // Кнопка "Показать ещё" в каталоге
+        $loadMoreBtn.on('click', function (e) {
             e.preventDefault();
 
             var $button = $(this);
             currentPage++;
 
             $button.hide();
-            if ($loadingSpinner.length) {
-                $loadingSpinner.show();
-            }
 
-            var postData = {
-                action: 'combined_search',
-                page: currentPage,
-                post_type: $button.data('post-type') || 'staff',
-                filter: currentFilter,
-                search: currentSearch,
-                nonce: ajax_params.nonce
-            };
+            // Скелетоны внизу
+            appendSkeletons($cardsGrid, 4);
 
             $.ajax({
                 url: ajax_params.ajax_url,
                 type: 'POST',
-                data: postData,
-                success: function(response) {
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
+                data: {
+                    action: 'combined_search',
+                    page: currentPage,
+                    post_type: $button.data('post-type') || 'staff',
+                    filter: currentFilter,
+                    search: currentSearch,
+                    nonce: ajax_params.nonce
+                },
+                success: function (response) {
+                    removeSkeletons($cardsGrid);
 
-                    // Удаляем предыдущее сообщение "нет результатов"
+                    // Убираем старые служебные сообщения
                     $cardsGrid.find('.no-results-message').remove();
-
-                    // Удаляем предыдущую информацию о поиске
                     $cardsGrid.find('.search-info').remove();
 
-                    // Добавляем новые карточки
-                    $cardsGrid.append(response);
+                    // Вставляем карточки
+                    appendCardsFromResponse($cardsGrid, response);
 
-                    // Проверяем, есть ли еще посты для загрузки
-                    var $searchInfo = $cardsGrid.find('.search-info');
-                    var totalPosts = $searchInfo.length ? parseInt($searchInfo.data('total')) : 0;
-                    var loadedPosts = $cardsGrid.find('.staff-card').length;
-
-                    if (totalPosts > 0 && loadedPosts < totalPosts) {
+                    // Показ/скрытие кнопки по маркеру
+                    if (hasMorePosts(response)) {
                         $button.show();
                     } else {
                         $button.hide();
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Catalog load more error:', error);
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
+                    removeSkeletons($cardsGrid);
                     currentPage--;
                     $button.show();
                 }
@@ -336,7 +408,7 @@
         });
 
         // ========================
-        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ КАТАЛОГА
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ КАТАЛОГА
         // ========================
 
         function performCombinedSearch() {
@@ -346,10 +418,8 @@
                 page: currentPage
             });
 
-            if ($loadingSpinner.length) {
-                $loadingSpinner.show();
-            }
             $loadMoreBtn.hide();
+            showSkeletons($cardsGrid, 8);
 
             $.ajax({
                 url: ajax_params.ajax_url,
@@ -362,40 +432,24 @@
                     search: currentSearch,
                     nonce: ajax_params.nonce
                 },
-                success: function(response) {
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
-
-                    // Полностью заменяем содержимое
+                success: function (response) {
                     $cardsGrid.html(response);
+                    $cardsGrid.find('.ajax-meta').remove();
 
-                    // Сбрасываем счетчик страниц
                     $loadMoreBtn.data('page', 1);
 
-                    // Показываем/скрываем кнопку "Показать ещё"
-                    var $searchInfo = $cardsGrid.find('.search-info');
-                    if ($searchInfo.length) {
-                        var totalPosts = parseInt($searchInfo.data('total'));
-                        var loadedPosts = $cardsGrid.find('.staff-card').length;
-
-                        if (totalPosts > loadedPosts) {
-                            $loadMoreBtn.show();
-                        }
+                    if (hasMorePosts(response)) {
+                        $loadMoreBtn.show();
                     } else {
-                        // Если нет результатов или их меньше 6
-                        var cardCount = $cardsGrid.find('.staff-card').length;
-                        if (cardCount >= 6 && !$cardsGrid.find('.no-results-message').length) {
-                            $loadMoreBtn.show();
-                        }
+                        $loadMoreBtn.hide();
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Catalog search error:', error);
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
-                    $loadMoreBtn.show();
+                    $cardsGrid.html(
+                        '<p class="no-results-message">Ошибка загрузки. Попробуйте позже.</p>'
+                    );
+                    $loadMoreBtn.hide();
                 }
             });
         }
@@ -403,11 +457,8 @@
         function loadInitialPosts() {
             console.log('Loading initial catalog posts');
 
-            if ($loadingSpinner.length) {
-                $loadingSpinner.show();
-            }
+            showSkeletons($cardsGrid, 8);
 
-            // Используем стандартную загрузку через load_more_posts
             $.ajax({
                 url: ajax_params.ajax_url,
                 type: 'POST',
@@ -418,26 +469,25 @@
                     filter: 'all',
                     nonce: ajax_params.nonce
                 },
-                success: function(response) {
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
-
+                success: function (response) {
                     $cardsGrid.html(response);
+                    $cardsGrid.find('.ajax-meta').remove();
+
                     currentPage = 1;
                     $loadMoreBtn.data('page', currentPage);
 
-                    // Показываем кнопку если есть что грузить дальше
-                    if (!$cardsGrid.find('.no-more-posts').length) {
+                    if (hasMorePosts(response)) {
                         $loadMoreBtn.show();
+                    } else {
+                        $loadMoreBtn.hide();
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Catalog initial load error:', error);
-                    if ($loadingSpinner.length) {
-                        $loadingSpinner.hide();
-                    }
-                    $loadMoreBtn.show();
+                    $cardsGrid.html(
+                        '<p class="no-results-message">Ошибка загрузки.</p>'
+                    );
+                    $loadMoreBtn.hide();
                 }
             });
         }
@@ -455,39 +505,32 @@
         const selectTriggers = document.querySelectorAll('.ai-custom-select');
 
         selectTriggers.forEach(trigger => {
-            trigger.addEventListener('click', function(e) {
+            trigger.addEventListener('click', function (e) {
                 e.stopPropagation();
                 const dropdownId = this.id.replace('-trigger', '-dropdown');
                 const dropdown = document.getElementById(dropdownId);
 
-                // Закрываем все открытые dropdown
                 document.querySelectorAll('.ai-dropdown').forEach(d => {
                     if (d.id !== dropdownId) {
                         d.classList.remove('active');
                     }
                 });
 
-                // Переключаем текущий dropdown
                 dropdown.classList.toggle('active');
 
-                // Обработка выбора элемента
                 dropdown.querySelectorAll('.ai-dropdown-item').forEach(item => {
-                    item.addEventListener('click', function(e) {
+                    item.addEventListener('click', function (e) {
                         e.stopPropagation();
                         const value = this.getAttribute('data-value');
                         const text = this.textContent;
 
-                        // Обновляем текст триггера
                         trigger.querySelector('span').textContent = text;
 
-                        // Обновляем скрытое поле
                         const input = trigger.parentElement.querySelector('input[type="hidden"]');
                         input.value = value;
 
-                        // Убираем ошибку, если была
                         trigger.parentElement.classList.remove('error');
 
-                        // Закрываем dropdown
                         dropdown.classList.remove('active');
                     });
                 });
@@ -495,7 +538,7 @@
         });
 
         // Закрытие dropdown при клике вне
-        document.addEventListener('click', function() {
+        document.addEventListener('click', function () {
             document.querySelectorAll('.ai-dropdown').forEach(dropdown => {
                 dropdown.classList.remove('active');
             });
@@ -506,7 +549,7 @@
         const sliderValue = document.querySelector('.ai-slider-value');
 
         if (peopleSlider && sliderValue) {
-            peopleSlider.addEventListener('input', function() {
+            peopleSlider.addEventListener('input', function () {
                 sliderValue.textContent = this.value;
             });
         }
@@ -516,17 +559,16 @@
         const aiSubmitBtn = document.getElementById('ai-submit-btn');
         const resultsContainer = document.getElementById('ai-results-grid');
 
-        // 3. Обработка отправки формы (ЗАМЕНА НА jQuery.ajax)
         if (aiForm && aiSubmitBtn && resultsContainer) {
             console.log('AI Calculator elements found');
 
-            $(aiSubmitBtn).on('click', function(e) {
+            $(aiSubmitBtn).on('click', function (e) {
                 e.preventDefault();
                 console.log('AI Calculator form submitted');
 
                 // Проверка обязательных полей
                 let hasErrors = false;
-                $('.ai-select-wrapper').each(function() {
+                $('.ai-select-wrapper').each(function () {
                     const input = $(this).find('input[type="hidden"]');
                     if (!input.val()) {
                         $(this).addClass('error');
@@ -541,17 +583,16 @@
                     return;
                 }
 
-                // Показ загрузки
-                const $aiSubmitBtn = $(aiSubmitBtn); // Конвертируем в jQuery объект
+                const $aiSubmitBtn = $(aiSubmitBtn);
                 const originalText = $aiSubmitBtn.text();
                 $aiSubmitBtn.text('Генерируем...');
                 $aiSubmitBtn.prop('disabled', true);
 
-                // Используем jQuery для resultsContainer
                 const $resultsContainer = $(resultsContainer);
-                $resultsContainer.html('<div class="ai-loading">Ищем подходящие варианты...</div>');
 
-                // Данные формы
+                // СКЕЛЕТОНЫ для AI
+                $resultsContainer.html(generateSkeletons(4));
+
                 const data = {
                     action: 'ai_calculator_search',
                     nonce: aiCalculatorData.nonce,
@@ -563,24 +604,29 @@
 
                 console.log('Sending AI request:', data);
 
-                // AJAX-запрос через jQuery (работает с WordPress)
                 $.ajax({
                     url: aiCalculatorData.ajax_url,
                     type: 'POST',
                     data: data,
-                    success: function(response) {
+                    success: function (response) {
                         console.log('AJAX success:', response);
                         if (response.success) {
                             $resultsContainer.html(response.data.html);
                         } else {
-                            $resultsContainer.html('<div class="ai-error">Ошибка: ' + (response.data || 'Неизвестная ошибка') + '</div>');
+                            $resultsContainer.html(
+                                '<div class="ai-error">Ошибка: ' +
+                                (response.data || 'Неизвестная ошибка') +
+                                '</div>'
+                            );
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('AJAX error:', error, xhr.responseText);
-                        $resultsContainer.html('<div class="ai-error">Ошибка подключения к серверу.</div>');
+                        $resultsContainer.html(
+                            '<div class="ai-error">Ошибка подключения к серверу.</div>'
+                        );
                     },
-                    complete: function() {
+                    complete: function () {
                         $aiSubmitBtn.text(originalText);
                         $aiSubmitBtn.prop('disabled', false);
                     }
@@ -601,10 +647,9 @@
     // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
     // ========================
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         console.log('Document ready, initializing catalogs...');
 
-        // Проверяем на главной странице
         var isHomePage = $('body').hasClass('home');
         var hasCatalogSection = $('section.catalog-main').length > 0;
 
@@ -613,25 +658,22 @@
             hasCatalogSection: hasCatalogSection
         });
 
-        // Инициализация главной страницы
+        // Главная страница
         if (isHomePage && hasCatalogSection) {
             console.log('Initializing home page catalog');
-            // Находим каталог на главной
             var $homeCatalog = $('#home-catalog');
             if ($homeCatalog.length) {
                 initCatalog('#home-catalog', false, true);
             } else {
-                // Или просто первый каталог на странице
                 initCatalog('section.catalog-main:first', false, true);
             }
         }
 
-        // Инициализация страницы каталога
+        // Страница каталога
         if (!isHomePage) {
-            // Проверяем по разным признакам
             var isCatalogPage = $('body').hasClass('page-template-catalog') ||
-                               window.location.pathname.includes('/catalog') ||
-                               ($('section.catalog-main').length && $('#product-search').length);
+                window.location.pathname.includes('/catalog') ||
+                ($('section.catalog-main').length && $('#product-search').length);
 
             if (isCatalogPage) {
                 console.log('Initializing catalog page');
@@ -639,7 +681,7 @@
             }
         }
 
-        // Инициализация AI калькулятора
+        // AI калькулятор
         console.log('Initializing AI Calculator...');
         initAICalculator();
 
