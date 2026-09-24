@@ -48,7 +48,7 @@ get_header();
         </h2>
       </div>
       <div class="catalog-wrap">
-        <div class="catalog-filter_wrap">
+        <!-- <div class="catalog-filter_wrap">
           <div class="catalog-filter">
             <div class="filters">
               <button class="filter-btn active" data-filter="all">Все интерактивы</button>
@@ -64,6 +64,60 @@ get_header();
               <button class="filter-btn" data-filter="konferentsiya">Конференция</button>
             </div>
           </div>
+        </div> -->
+          <div class="catalog-filter_wrap">
+          <div class="catalog-filter">
+            <div class="filters">
+              <button class="filter-btn active" data-filter="all">Все интерактивы</button>
+              <?php
+              // ============================================
+              // ДИНАМИЧЕСКИЙ ВЫВОД КАТЕГОРИЙ
+              // ============================================
+              // Только те категории, у которых есть посты "staff".
+              // Uncategorized — исключён.
+              // Порядок — по term_id (порядок создания в админке).
+              // ============================================
+
+              $categories = get_terms( array(
+                  'taxonomy'   => 'category',
+                  'hide_empty' => true,
+                  'exclude'    => array( (int) get_option( 'default_category' ) ),
+                  'orderby'    => 'term_id',
+                  'order'      => 'ASC',
+              ) );
+
+              if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                  foreach ( $categories as $cat ) {
+
+                      // Проверяем, есть ли посты staff в этой категории
+                      $staff_posts = get_posts( array(
+                          'post_type'      => 'staff',
+                          'post_status'    => 'publish',
+                          'posts_per_page' => 1,
+                          'fields'         => 'ids',
+                          'tax_query'      => array(
+                              array(
+                                  'taxonomy' => 'category',
+                                  'field'    => 'slug',
+                                  'terms'    => $cat->slug,
+                              ),
+                          ),
+                      ) );
+
+                      if ( empty( $staff_posts ) ) {
+                          continue; // нет постов staff — пропускаем
+                      }
+
+                      printf(
+                          '<button class="filter-btn" data-filter="%s">%s</button>',
+                          esc_attr( $cat->slug ),
+                          esc_html( $cat->name )
+                      );
+                  }
+              }
+              ?>
+            </div>
+          </div>
         </div>
 
         <!-- Карточки -->
@@ -71,7 +125,7 @@ get_header();
           <?php
           $args = array(
               'post_type'      => 'staff',
-              'posts_per_page' => 8,
+              'posts_per_page' => MEMORYLAB_PAGE_SIZE,
               'post_status'    => 'publish',
               'orderby'        => 'date',
               'order'          => 'DESC',
@@ -233,61 +287,7 @@ get_header();
         </h2>
       </div>
 
-      <div class="instagram-wrap">
-        <div class="instagram-grid-container">
-          <!-- Первый ряд -->
-          <div class="row-insta row-insta-1">
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-1.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-2.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-3.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-4.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-5.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-6.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-7.png" alt="" />
-            </div>
-          </div>
-
-          <!-- Второй ряд -->
-          <div class="row-insta row-insta-2">
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-8.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-9.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-10.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-11.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-12.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-13.png" alt="" />
-            </div>
-            <div class="instagram-item">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-14.png" alt="" />
-            </div>
-          </div>
-        </div>
-        <!-- Градиентный слой поверх изображений -->
-        <div class="gradient-overlay"></div>
-      </div>
+      <?php echo do_shortcode( '[instagram_feed]' ); ?>
 
       <!-- Кнопки поверх всего -->
       <div class="cta-insta">

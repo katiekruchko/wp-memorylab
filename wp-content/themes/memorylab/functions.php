@@ -13,6 +13,14 @@ if ( ! defined( '_S_VERSION' ) ) {
 }
 
 /**
+ * Размер партии карточек в каталоге и на главной.
+ * Меняйте ЗДЕСЬ — число подхватится и в PHP, и в JS.
+ */
+if ( ! defined( 'MEMORYLAB_PAGE_SIZE' ) ) {
+	define( 'MEMORYLAB_PAGE_SIZE', 19 );
+}
+
+/**
  * Sets up theme defaults and registers support for various WordPress features.
  */
 function memorylab_setup() {
@@ -163,13 +171,16 @@ function load_more_posts() {
     $filter = isset($_POST['filter']) ? sanitize_text_field($_POST['filter']) : 'all';
     $search = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
 
+    // Нормализуем page: 0 → 1 (для фильтрации с главной)
+    $query_page = ($page < 1) ? 1 : $page;
+
     $args = array(
         'post_type'      => $post_type,
-        'posts_per_page' => 8,
+        'posts_per_page' => MEMORYLAB_PAGE_SIZE,
         'post_status'    => 'publish',
         'orderby'        => 'date',
         'order'          => 'DESC',
-        'paged'          => $page,
+        'paged'          => $query_page,
     );
 
     // Добавляем текстовый поиск если есть (минимум 3 символа)
@@ -213,9 +224,9 @@ function load_more_posts() {
         endwhile;
 
         // Есть ли ещё посты для загрузки?
-        $has_more = ($page < $query->max_num_pages);
+        $has_more = ($query_page < $query->max_num_pages);
     else :
-        if ($page == 1) {
+        if ($page == 1 || $page == 0) {
             // Только для первой страницы показываем сообщение
             echo '<div class="no-results-message">';
             if (!empty($search) && $filter !== 'all') {
@@ -380,13 +391,16 @@ function combined_search_ajax() {
     $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
     $post_type = isset($_POST['post_type']) ? sanitize_text_field($_POST['post_type']) : 'staff';
 
+    // Нормализуем page: 0 → 1
+    $query_page = ($page < 1) ? 1 : $page;
+
     $args = array(
         'post_type'      => $post_type,
-        'posts_per_page' => 8,
+        'posts_per_page' => MEMORYLAB_PAGE_SIZE,
         'post_status'    => 'publish',
         'orderby'        => 'date',
         'order'          => 'DESC',
-        'paged'          => $page,
+        'paged'          => $query_page,
     );
 
     // Добавляем текстовый поиск (минимум 3 символа)
@@ -455,7 +469,7 @@ function combined_search_ajax() {
         endwhile;
 
         // Есть ли ещё посты?
-        $has_more = ($page < $query->max_num_pages);
+        $has_more = ($query_page < $query->max_num_pages);
 
         // Информация о количестве (для совместимости)
         if ($page == 1) {
@@ -580,14 +594,15 @@ function memorylab_enqueue_scripts() {
         'universal-ajax',
         get_template_directory_uri() . '/js/universal-ajax.js',
         array('jquery'),
-        '1.0.1', // обновили версию, чтобы сбросить кэш
+        '1.0.2', // обновили версию, чтобы сбросить кэш
         true
     );
 
     // Локализация для AJAX каталога
     wp_localize_script('universal-ajax', 'ajax_params', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce'    => wp_create_nonce('load_more_nonce'),
+        'ajax_url'  => admin_url('admin-ajax.php'),
+        'nonce'     => wp_create_nonce('load_more_nonce'),
+        'page_size' => MEMORYLAB_PAGE_SIZE,   // ← размер партии для JS
     ));
 
     // Локализация для AI калькулятора

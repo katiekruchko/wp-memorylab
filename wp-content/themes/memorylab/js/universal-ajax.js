@@ -119,7 +119,14 @@
         var searchTimeout;
         var DEBOUNCE_DELAY = 300;
         var MIN_SEARCH_LENGTH = 3; // Минимум 3 символа для поиска
-        var PAGE_SIZE = 8;          // Должно совпадать с posts_per_page в PHP
+
+        // Размер партии — берём из PHP (ajax_params.page_size),
+        // если недоступно — дефолт 19
+        var PAGE_SIZE = (typeof ajax_params !== 'undefined' && ajax_params.page_size)
+            ? parseInt(ajax_params.page_size, 10)
+            : 19;
+
+        console.log('PAGE_SIZE =', PAGE_SIZE);
 
         // ========================
         // ГЛАВНАЯ СТРАНИЦА (без поиска)
@@ -210,7 +217,7 @@
                 console.log('Loading home filtered posts:', currentFilter);
 
                 $loadMoreBtn.hide();
-                showSkeletons($cardsGrid, 8);
+                showSkeletons($cardsGrid, PAGE_SIZE);
 
                 $.ajax({
                     url: ajax_params.ajax_url,
@@ -237,7 +244,7 @@
 
                         // Показываем кнопку ТОЛЬКО если:
                         // 1. Сервер сказал has-more=1
-                        // 2. Вернулась полная партия (8 карточек) — значит, точно есть продолжение
+                        // 2. Вернулась полная партия (PAGE_SIZE карточек) — значит, точно есть продолжение
                         if (hasMorePosts(response) && cardCount >= PAGE_SIZE) {
                             $loadMoreBtn.show();
                         } else {
@@ -419,7 +426,7 @@
             });
 
             $loadMoreBtn.hide();
-            showSkeletons($cardsGrid, 8);
+            showSkeletons($cardsGrid, PAGE_SIZE);
 
             $.ajax({
                 url: ajax_params.ajax_url,
@@ -457,7 +464,7 @@
         function loadInitialPosts() {
             console.log('Loading initial catalog posts');
 
-            showSkeletons($cardsGrid, 8);
+            showSkeletons($cardsGrid, PAGE_SIZE);
 
             $.ajax({
                 url: ajax_params.ajax_url,

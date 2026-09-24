@@ -193,3 +193,57 @@ wp-content/uploads/instagram-feed/
 
 * Разработано по заказу.
 * Использует официальный Instagram API (Meta).
+
+вот код шаблона, вместо которого сделан шорткод:
+
+<div class="instagram-wrap">
+        <div class="instagram-grid-container">
+          <div class="row-insta row-insta-1">
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-1.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-2.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-3.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-4.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-5.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-6.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-7.png" alt="" />
+            </div>
+          </div>
+          <div class="row-insta row-insta-2">
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-8.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-9.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-10.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-11.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-12.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-13.png" alt="" />
+            </div>
+            <div class="instagram-item">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta-14.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="gradient-overlay"></div>
+      </div>

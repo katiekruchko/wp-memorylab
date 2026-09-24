@@ -3,7 +3,7 @@
  * Plugin Name: Instagram Feed Sync
  * Description: Скачивает изображения из Instagram через официальный API раз в день и подменяет блок .instagram-wrap. Переключатель Instagram / Дефолтные изображения + cron-токен.
  * Version: 1.0.0
- * Author: You
+ * Author: Memorylab
  * Text Domain: ifs
  * Requires PHP: 7.4
  */

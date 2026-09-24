@@ -30,7 +30,7 @@ get_header();
         </div>
       </div>
       <div class="catalog-wrap">
-        <div class="catalog-filter_wrap">
+        <!-- <div class="catalog-filter_wrap">
           <div class="catalog-filter">
             <div class="filters">
               <button class="filter-btn active" data-filter="all">Все интерактивы</button>
@@ -46,6 +46,60 @@ get_header();
               <button class="filter-btn" data-filter="konferentsiya">Конференция</button>
             </div>
           </div>
+        </div> -->
+        <div class="catalog-filter_wrap">
+          <div class="catalog-filter">
+            <div class="filters">
+              <button class="filter-btn active" data-filter="all">Все интерактивы</button>
+              <?php
+              // ============================================
+              // ДИНАМИЧЕСКИЙ ВЫВОД КАТЕГОРИЙ
+              // ============================================
+              // Только те категории, у которых есть посты "staff".
+              // Uncategorized — исключён.
+              // Порядок — по term_id (порядок создания в админке).
+              // ============================================
+
+              $categories = get_terms( array(
+                  'taxonomy'   => 'category',
+                  'hide_empty' => true,
+                  'exclude'    => array( (int) get_option( 'default_category' ) ),
+                  'orderby'    => 'term_id',
+                  'order'      => 'ASC',
+              ) );
+
+              if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                  foreach ( $categories as $cat ) {
+
+                      // Проверяем, есть ли посты staff в этой категории
+                      $staff_posts = get_posts( array(
+                          'post_type'      => 'staff',
+                          'post_status'    => 'publish',
+                          'posts_per_page' => 1,
+                          'fields'         => 'ids',
+                          'tax_query'      => array(
+                              array(
+                                  'taxonomy' => 'category',
+                                  'field'    => 'slug',
+                                  'terms'    => $cat->slug,
+                              ),
+                          ),
+                      ) );
+
+                      if ( empty( $staff_posts ) ) {
+                          continue; // нет постов staff — пропускаем
+                      }
+
+                      printf(
+                          '<button class="filter-btn" data-filter="%s">%s</button>',
+                          esc_attr( $cat->slug ),
+                          esc_html( $cat->name )
+                      );
+                  }
+              }
+              ?>
+            </div>
+          </div>
         </div>
         <!-- Карточки -->
         <div class="cards-grid" id="cards-grid">
@@ -53,7 +107,7 @@ get_header();
           $paged = get_query_var('paged') ? get_query_var('paged') : 1;
           $args = array(
               'post_type'      => 'staff',
-              'posts_per_page' => 8,
+              'posts_per_page' => MEMORYLAB_PAGE_SIZE,
               'post_status'    => 'publish',
               'orderby'        => 'date',
               'order'          => 'DESC',
