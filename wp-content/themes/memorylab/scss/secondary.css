@@ -1091,6 +1091,8 @@ img.ramki-img {
   margin-top: 48px;
 }
 
+.eg-vd-preview-wrapper picture { display: contents; }
+
 .vd-gen-eg_wrap_inner {
   border: 4px solid #fff;
   overflow: hidden;

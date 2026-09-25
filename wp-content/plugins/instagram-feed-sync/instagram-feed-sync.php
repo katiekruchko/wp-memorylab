@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Instagram Feed Sync
  * Description: Скачивает изображения из Instagram через официальный API раз в день и подменяет блок .instagram-wrap. Переключатель Instagram / Дефолтные изображения + cron-токен.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Memorylab
  * Text Domain: ifs
  * Requires PHP: 7.4
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'IFS_VERSION', '1.0.0' );
+define( 'IFS_VERSION', '1.0.1' );
 define( 'IFS_FILE', __FILE__ );
 define( 'IFS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -23,14 +23,15 @@ class IFS_Plugin {
     const OPT_TOKEN        = 'ifs_token';          // секретный токен для cron
     const OPT_ACCESS_TOKEN = 'ifs_access_token';   // Instagram Access Token
     const OPT_LAST         = 'ifs_last_sync';      // timestamp последней синхронизации
-    const OPT_MAP          = 'ifs_image_map';      // массив URL скачанных картинок
-    const OPT_COUNT        = 'ifs_needed';         // сколько картинок нужно
+    const OPT_MAP          = 'ifs_image_map';      // массив URL скачанных картинок (свежие — в начале)
+    const OPT_COUNT        = 'ifs_needed';         // сколько картинок нужно выводить
     const OPT_LAST_ERROR   = 'ifs_last_error';     // последняя ошибка API
 
     const ENDPOINT_MEDIA   = 'https://graph.instagram.com/me/media';
     const ENDPOINT_REFRESH = 'https://graph.instagram.com/refresh_access_token';
 
     const TOTAL_SLOTS = 14;
+    const POSTS_LIMIT = 20;   // сколько последних ПОСТОВ забирать из Instagram
 
     public static function init() {
         add_action( 'admin_menu',            [ __CLASS__, 'admin_menu' ] );
@@ -270,7 +271,7 @@ class IFS_Plugin {
                 <input type="hidden" name="action" value="ifs_sync">
                 <p>
                     <button class="button">Синхронизировать сейчас</button>
-                    <span class="description">Скачает новые изображения из Instagram прямо сейчас.</span>
+                    <span class="description">Скачает изображения из последних <?php echo (int) self::POSTS_LIMIT; ?> постов Instagram прямо сейчас.</span>
                 </p>
             </form>
 
@@ -282,6 +283,10 @@ class IFS_Plugin {
                     <tr>
                         <td><b>Всего скачано</b></td>
                         <td><?php echo count( $map ); ?> из <?php echo esc_html( $count ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Глубина выборки</b></td>
+                        <td>последние <?php echo (int) self::POSTS_LIMIT; ?> постов Instagram</td>
                     </tr>
                     <tr>
                         <td><b>Последняя синхронизация</b></td>
@@ -307,9 +312,9 @@ class IFS_Plugin {
             </table>
 
             <?php if ( ! empty( $map ) ): ?>
-                <h3>Последние скачанные изображения</h3>
+                <h3>Последние скачанные изображения (свежие сверху)</h3>
                 <div class="ifs-preview">
-                    <?php foreach ( array_slice( $map, -14 ) as $url ): ?>
+                    <?php foreach ( array_slice( $map, 0, 14 ) as $url ): ?>
                         <img src="<?php echo esc_url( $url ); ?>" alt="">
                     <?php endforeach; ?>
                 </div>
@@ -328,7 +333,7 @@ class IFS_Plugin {
         }
 
         $all_items = [];
-        $max_pages = 10;   // до 10 страниц × 50 = до 500 постов
+        $max_pages = 2;   // 20 постов с запасом хватает (limit=50 на страницу)
         $page      = 0;
 
         // Базовый URL
@@ -367,6 +372,11 @@ class IFS_Plugin {
                 $all_items = array_merge( $all_items, $data['data'] );
             }
 
+            // Уже набрали нужное количество постов — дальше не идём
+            if ( count( $all_items ) >= self::POSTS_LIMIT ) {
+                break;
+            }
+
             // Есть ли следующая страница?
             $url = $data['paging']['next'] ?? null;
         }
@@ -374,6 +384,10 @@ class IFS_Plugin {
         if ( empty( $all_items ) ) {
             return new WP_Error( 'ifs_empty', 'Instagram не вернул медиа.' );
         }
+
+        // ⬇️ Instagram отдаёт посты от новых к старым.
+        // Берём только первые POSTS_LIMIT постов — это и есть "самые новые".
+        $all_items = array_slice( $all_items, 0, self::POSTS_LIMIT );
 
         // Разворачиваем всё в плоский список URL
         $urls = [];
@@ -498,6 +512,9 @@ class IFS_Plugin {
 
         require_once ABSPATH . 'wp-admin/includes/file.php';
 
+        // Скачиваем новые картинки, сохраняя порядок Instagram (новые → старые)
+        $new = [];
+
         foreach ( $images as $url ) {
             $basename = self::url_to_filename( $url );
 
@@ -514,15 +531,29 @@ class IFS_Plugin {
             }
 
             if ( file_exists( $dest ) ) {
-                $map[] = trailingslashit( self::upload_url() ) . $basename;
+                $new[] = trailingslashit( self::upload_url() ) . $basename;
                 $known[ $basename ] = true;
             }
         }
 
-        // Оставляем запас: нужно × 2, минимум 30
-        $keep = max( self::get_needed() * 2, 30 );
+        // Новые — в начало массива, старые — следом.
+        // Так $map всегда хранит хронологию Instagram: свежие сверху.
+        $map = array_merge( $new, $map );
+
+        // Защита от дублей по имени файла (на случай, если что-то осталось от прошлых версий)
+        $seen = [];
+        $map  = array_values( array_filter( $map, function( $u ) use ( &$seen ) {
+            $b = basename( $u );
+            if ( isset( $seen[ $b ] ) ) return false;
+            $seen[ $b ] = true;
+            return true;
+        } ) );
+
+        // Оставляем голову массива (свежие), режем хвост (старые).
+        // Запас: нужно × 2, но не меньше, чем постов × 2.
+        $keep = max( self::get_needed() * 2, self::POSTS_LIMIT * 2 );
         if ( count( $map ) > $keep ) {
-            $map = array_slice( $map, -$keep );
+            $map = array_slice( $map, 0, $keep );
         }
 
         update_option( self::OPT_MAP, array_values( $map ) );
@@ -550,7 +581,8 @@ class IFS_Plugin {
         $urls = [];
 
         if ( $mode === 'instagram' && ! empty( $map ) ) {
-            $urls = array_slice( $map, -$need );
+            // Свежие — в начале массива
+            $urls = array_slice( $map, 0, $need );
         }
 
         if ( count( $urls ) < $need ) {

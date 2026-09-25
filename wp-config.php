@@ -27,6 +27,9 @@ if ( getenv( 'IS_DDEV_PROJECT' ) != 'true' ) {
   define( 'DB_USER', 'memorylab' );
 
   // /** Database password */
+  /*
+  cF6cK7oF6zF*FF*ds89
+  */
   define( 'DB_PASSWORD', 'fBw/ULqz-6QYnt9o' );
 
   // /** Database hostname */
